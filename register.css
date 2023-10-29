@@ -8,7 +8,7 @@ body {
     background: linear-gradient(160deg, #95ccc5, #2e5668);
 }
 
-.card-body {
+.card {
     background-color: #ffeaac;
     font-family: 'Baloo', sans-serif;
     box-shadow: 10px 10px 10px #2e5668;

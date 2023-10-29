@@ -1,0 +1,69 @@
+html {
+    height: 100%;
+}
+
+body {
+    size: 100%;
+    margin: 0;
+    background: linear-gradient(160deg, #95ccc5, #2e5668);
+}
+
+.card {
+    background-color: #ffeaac;
+    font-family: 'Baloo', sans-serif;
+    box-shadow: 10px 10px 10px #2e5668;
+    color:  #2e5668;
+}
+
+.modal-content {
+    background-color: #ffeaac;
+    font-family: 'Baloo', sans-serif;
+    color:  #2e5668;
+}
+
+.modal-content button{
+    background-color: #2e5668;
+    font-family: 'Baloo', sans-serif;
+    color:  #ffeaac ;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.modal-content .btn-success {
+    margin-top: 5px;
+    background-color: #2e5668;
+    color: #ffeaac;
+}
+
+.modal-content .btn-success:hover{
+    margin-top: 5px;
+    background-color: #ffeaac;
+    border-color: #2e5668;
+    color: #2e5668;
+}
+
+.modal-content .btn-danger {
+    background-color: #ff867c;
+    color: #2e5668;
+    border: none;
+}
+
+.modal-content .btn-danger:hover {
+    color: white;
+    border: none;
+}
+
+.modal-body li {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    color: #2e5668;
+}
+
+.form-control:focus {
+    color: #2e5668;
+    border-color: white;
+}
