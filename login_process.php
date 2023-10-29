@@ -10,6 +10,7 @@ session_start();
 
     if ($data) {
         $_SESSION["username"] = $username;
+        $_SESSION["userID"]=$data['userID'];
         header("Location: menu.php"); 
     } else {
         $_SESSION["login_failed"] = true;
