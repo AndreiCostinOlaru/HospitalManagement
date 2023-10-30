@@ -16,6 +16,15 @@
         document.getElementById("fireInput").value = salary/2;
         $('#fireStaffModal').modal('show');
     }
+
+    function setRoomId(roomId, price) {
+    console.log("setRoomId function called");
+    document.getElementById("roomIdInput").value = roomId;
+    document.getElementById("sellAmount").innerHTML = price / 2;
+    document.getElementById("sellInput").value = price / 2;
+    $('#sellRoomModal').modal('show');
+}
+
 </script>
 <body class="bg-light">
     <?php
@@ -223,6 +232,27 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="sellRoomModal" tabindex="-1" aria-labelledby="sellRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sellRoomModalLabel">Sell Room</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to sell this room?</p>
+                <p>You will receive $<span id="sellAmount"></span> for selling this room.</p>
+                <form action="sell_room.php" method="POST">
+                    <input type="hidden" name="room_id" id="roomIdInput">
+                    <input type="hidden" name="sell_amount" id="sellInput">
+                    <button type="submit" class="btn btn-danger">Confirm Sale</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
  </body>
 </html>
