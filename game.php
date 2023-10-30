@@ -107,7 +107,10 @@
                         $sreq->execute([$data['staffID']]);
                         $sdata = $sreq->fetch();
                         if($data){
-                        echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . '
+                        $treq = $bdd->prepare("SELECT description FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
+                        $treq->execute([$data['staffID']]);
+                        $tdata = $treq->fetch();
+                        echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . ' | '. $tdata['description'] .'
                                 <button type="button" class="btn btn-danger" onclick="setStaffId('.$data['staffID'].','. $sdata['salary'] .')">Fire</button>
                         </li>';
                         $staffFetched = true;
