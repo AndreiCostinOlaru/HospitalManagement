@@ -13,6 +13,7 @@
     function setStaffId(staffId, salary) {
         document.getElementById("staffIdInput").value = staffId;
         document.getElementById("fireAmount").innerHTML = salary/2;
+        document.getElementById("fireInput").value = salary/2;
         $('#fireStaffModal').modal('show');
     }
 </script>
@@ -98,15 +99,22 @@
             <div class="modal-body">
                 <ul>
                     <?php
+                    $staffFetched=false;
                     $req = $bdd->prepare("SELECT * FROM staff WHERE userID=?;");
                     $req->execute([$_SESSION['userID']]);
                     while ($data = $req->fetch()) {
                         $sreq = $bdd->prepare("SELECT salary FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
                         $sreq->execute([$data['staffID']]);
                         $sdata = $sreq->fetch();
+                        if($data){
                         echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . '
                                 <button type="button" class="btn btn-danger" onclick="setStaffId('.$data['staffID'].','. $sdata['salary'] .')">Fire</button>
                         </li>';
+                        $staffFetched = true;
+                        }
+                    }
+                    if(!$staffFetched){
+                        echo "<li>No staff to show.</li>";
                     }
                     ?>
                 </ul>
@@ -132,6 +140,7 @@
                 <p>You will receive $<span id="fireAmount"></span> for firing this staff member.</p>
                 <form action="fire_staff.php" method="POST">
                     <input type="hidden" name="staff_id" id="staffIdInput">
+                    <input type="hidden" name="fire_amount" id="fireInput">
                     <button type="submit" class="btn btn-danger">Confirm Fire</button>
                 </form>
             </div>

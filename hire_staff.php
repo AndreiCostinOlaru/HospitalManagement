@@ -2,7 +2,7 @@
 session_start();
     $username = $_SESSION['username'];
     $userID= $_SESSION['userID'];
-    $staffID = $_POST['staffTypeID']; // You should have an input field in the modal to select the staff to hire
+    $staffID = $_POST['staffTypeID']; 
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
 
