@@ -24,6 +24,12 @@
         echo "<script>alert('Not enough funds to hire the staff.');</script>";
         $_SESSION["hire_failed"] = false;
     }
+    if (isset($_SESSION["purchase_failed"]) && $_SESSION["purchase_failed"]) {
+        echo "<script>alert('Purchase failed.');</script>";
+        $_SESSION["purchase_failed"] = false;
+    }
+
+
     ?>
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -45,6 +51,8 @@
                         <p>Your Budget: $<?php echo $budget; ?></p>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>
                     </div>
                 </div>
             </div>
@@ -153,7 +161,68 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="purchaseRoomModal" tabindex="-1" aria-labelledby="purchaseRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="purchaseRoomModalLabel">Purchase Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="purchase_room.php" method="POST">
+                        <div class="form-group">
+                            <label for="room_type">Select Room Type:</label>
+                            <select name="roomTypeID" class="form-control">
+                                <?php
+                                $req = $bdd->prepare("SELECT * FROM room_type;");
+                                $req->execute();
+                                while($data = $req->fetch()) {
+                                    echo '<option value="' . $data['roomTypeID'] . '">'
+                                        . $data["description"] . ' - Cost: $' . $data["price"] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">PURCHASE</button>
+                        
+                    </form>
+                </div>
 
+                <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="displayRoomsModal" tabindex="-1" aria-labelledby="displayRoomsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="displayRoomsModalLabel">Owned Rooms</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <?php
+                    $req = $bdd->prepare("SELECT * FROM room WHERE userID=?;");
+                    $req->execute([$_SESSION['userID']]);
+                    while ($data = $req->fetch()) {
+                        $sreq = $bdd->prepare("SELECT price,description FROM room_type rt INNER JOIN room r ON rt.roomTypeID=r.roomTypeID WHERE r.roomID=?;");
+                        $sreq->execute([$data['roomID']]);
+                        $sdata = $sreq->fetch();
+                        echo '<li>Room number: ' . $data["roomID"] . ' - Type: ' . $sdata["description"] . ' - Cost: ' . $sdata["price"] . '
+                            <button type="button" class="btn btn-danger" onclick="setRoomId('.$data['roomID'].','.$sdata['price'].')">Sell</button>
+                        </li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
  </body>
 </html>
