@@ -24,12 +24,16 @@
     $('#sellRoomModal').modal('show');
 }
 
-    function setPatient(patientID, firstName,lastName) {
+    function setPatient(patientID, firstName,lastName,disease) {
         let argument=firstName+" "+lastName;
         let avatarURL = "https://api.dicebear.com/7.x/avataaars/svg?size=150&style=circle&seed=" + encodeURIComponent(argument) + ".svg";
         document.getElementById("avatar").src=avatarURL;
         document.getElementById("firstName").innerHTML="First Name: "+ firstName;
         document.getElementById("lastName").innerHTML ="Last Name: " + lastName;
+        if(!disease){
+            disease="Unknown";
+        }
+        document.getElementById("disease").innerHTML="Disease: "+ disease;
         $('#displayPatientModal').modal('show');
     }
 </script>
@@ -75,19 +79,20 @@
         </div>
         <div class="row justify-content-center mt-5">
             <div class="col-md-6" >
-                <div class="card" style="overflow-y: scroll;">
+                <div class="card">
                     <div class="card-body">
                         <?php
                         $patientFetched=false;
-                        $req = $bdd->prepare("SELECT * FROM patient WHERE userID=? AND atHospital=1 ORDER BY atHospitalTime DESC;");
+                        $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID WHERE userID=? ORDER BY atHospitalTime DESC;");
                         $req->execute([$_SESSION['userID']]);
                         while ($data = $req->fetch()) {
                             $firstName = $data['firstName'];
                             $lastName = $data['lastName'];
                             $patientID = $data['patientID'];
+                            $disease = $data['diseaseID'];
                             echo '<li><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' . 
                             urlencode($data['firstName'] .' '. $data['lastName']) . '.svg" alt="avatar" />
-                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
+                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
                             $patientFetched = true;
                             }
                         if(!$patientFetched){
@@ -298,6 +303,7 @@
                 <img id="avatar" alt="avatar" />
                 <h5 id="firstName"></h5>
                 <h5 id="lastName"></h5>
+                <h5 id="disease"></h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
