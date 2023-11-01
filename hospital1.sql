@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2023 at 02:59 PM
+-- Generation Time: Nov 01, 2023 at 10:19 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,224 +24,258 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `disease`
+--
+
+CREATE TABLE `disease` (
+  `diseaseID` int(11) NOT NULL,
+  `roomTypeID` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `patient`
 --
 
 CREATE TABLE `patient` (
   `patientID` int(11) NOT NULL,
   `firstName` varchar(30) NOT NULL,
-  `lastName` varchar(30) NOT NULL,
-  `diseaseID` int(11) DEFAULT NULL,
-  `atHospital` tinyint(1) NOT NULL DEFAULT 0,
-  `userID` int(11) NOT NULL,
-  `atHospitalTime` datetime NOT NULL DEFAULT current_timestamp()
+  `lastName` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `patient`
 --
 
-INSERT INTO `patient` (`patientID`, `firstName`, `lastName`, `diseaseID`, `atHospital`, `userID`, `atHospitalTime`) VALUES
-(1, 'Liam', 'Smith', NULL, 0, 1, '2023-11-01 13:39:29'),
-(2, 'Noah', 'Johnson', NULL, 0, 1, '2023-11-01 14:12:59'),
-(3, 'Ethan', 'Brown', NULL, 0, 1, '2023-11-01 13:39:07'),
-(4, 'Benjamin', 'Davis', NULL, 0, 1, '2023-11-01 13:24:47'),
-(5, 'Alexander', 'Wilson', NULL, 0, 1, '2023-11-01 13:38:58'),
-(6, 'Samuel', 'Lee', NULL, 0, 1, '2023-11-01 13:24:47'),
-(7, 'William', 'Harris', NULL, 0, 1, '2023-11-01 13:24:47'),
-(8, 'James', 'Clark', NULL, 0, 1, '2023-11-01 13:37:36'),
-(9, 'Michael', 'Lewis', NULL, 0, 1, '2023-11-01 13:24:47'),
-(10, 'David', 'Hall', NULL, 0, 1, '2023-11-01 14:13:00'),
-(11, 'Daniel', 'Turner', NULL, 0, 1, '2023-11-01 13:37:53'),
-(12, 'Andrew', 'Wright', NULL, 0, 1, '2023-11-01 13:39:32'),
-(13, 'Christopher', 'White', NULL, 0, 1, '2023-11-01 13:24:47'),
-(14, 'Joseph', 'Moore', NULL, 0, 1, '2023-11-01 13:34:31'),
-(15, 'Nicholas', 'Baker', NULL, 0, 1, '2023-11-01 13:39:30'),
-(16, 'John', 'Green', NULL, 0, 1, '2023-11-01 13:43:51'),
-(17, 'Caleb', 'Adams', NULL, 0, 1, '2023-11-01 13:39:00'),
-(18, 'Matthew', 'King', NULL, 0, 1, '2023-11-01 13:24:47'),
-(19, 'Oliver', 'Scott', NULL, 0, 1, '2023-11-01 13:39:53'),
-(20, 'Anthony', 'Young', NULL, 0, 1, '2023-11-01 13:37:54'),
-(21, 'Mason', 'Mitchell', NULL, 0, 1, '2023-11-01 13:24:47'),
-(22, 'Henry', 'Walker', NULL, 0, 1, '2023-11-01 13:39:41'),
-(23, 'Jackson', 'Anderson', NULL, 0, 1, '2023-11-01 13:43:47'),
-(24, 'Oliver', 'Thomas', NULL, 0, 1, '2023-11-01 13:24:47'),
-(25, 'Samuel', 'Jackson', NULL, 0, 1, '2023-11-01 13:39:27'),
-(26, 'William', 'Williams', NULL, 0, 1, '2023-11-01 13:24:47'),
-(27, 'James', 'Hall', NULL, 0, 1, '2023-11-01 14:12:54'),
-(28, 'Michael', 'Allen', NULL, 0, 1, '2023-11-01 13:24:47'),
-(29, 'David', 'Martin', NULL, 0, 1, '2023-11-01 13:24:47'),
-(30, 'Daniel', 'Taylor', NULL, 0, 1, '2023-11-01 13:38:55'),
-(31, 'Andrew', 'Wood', NULL, 0, 1, '2023-11-01 13:24:47'),
-(32, 'Christopher', 'Harris', NULL, 0, 1, '2023-11-01 13:39:03'),
-(33, 'Joseph', 'Robinson', NULL, 0, 1, '2023-11-01 13:39:01'),
-(34, 'Nicholas', 'Nelson', NULL, 0, 1, '2023-11-01 13:37:41'),
-(35, 'John', 'Edwards', NULL, 0, 1, '2023-11-01 14:12:56'),
-(36, 'Caleb', 'Turner', NULL, 0, 1, '2023-11-01 13:39:56'),
-(37, 'Matthew', 'Carter', NULL, 0, 1, '2023-11-01 13:39:35'),
-(38, 'Samuel', 'Parker', NULL, 0, 1, '2023-11-01 13:34:27'),
-(39, 'Joseph', 'Evans', NULL, 0, 1, '2023-11-01 13:39:54'),
-(40, 'Isaac', 'Collins', NULL, 0, 1, '2023-11-01 13:24:47'),
-(41, 'Christopher', 'Murphy', NULL, 0, 1, '2023-11-01 13:38:59'),
-(42, 'David', 'Bennett', NULL, 0, 1, '2023-11-01 13:24:47'),
-(43, 'William', 'Roberts', NULL, 0, 1, '2023-11-01 13:38:49'),
-(44, 'Andrew', 'Foster', NULL, 0, 1, '2023-11-01 13:39:39'),
-(45, 'Nicholas', 'Gray', NULL, 0, 1, '2023-11-01 14:12:54'),
-(46, 'James', 'Richardson', NULL, 0, 1, '2023-11-01 13:37:36'),
-(47, 'Michael', 'Reed', NULL, 0, 1, '2023-11-01 13:39:27'),
-(48, 'Jonathan', 'Murray', NULL, 0, 1, '2023-11-01 13:24:47'),
-(49, 'Elijah', 'Cole', NULL, 0, 1, '2023-11-01 13:39:06'),
-(50, 'Benjamin', 'Cooper', NULL, 0, 1, '2023-11-01 13:39:22'),
-(51, 'Ryan', 'Ellis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(52, 'Luke', 'Howard', NULL, 0, 2, '2023-11-01 13:24:47'),
-(53, 'Joshua', 'Ward', NULL, 0, 2, '2023-11-01 13:24:47'),
-(54, 'Nathan', 'Cook', NULL, 0, 2, '2023-11-01 13:24:47'),
-(55, 'Jackson', 'Cox', NULL, 0, 2, '2023-11-01 13:24:47'),
-(56, 'Aiden', 'Reed', NULL, 0, 2, '2023-11-01 13:24:47'),
-(57, 'Caleb', 'Hayes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(58, 'Matthew', 'Rose', NULL, 0, 2, '2023-11-01 13:24:47'),
-(59, 'Samuel', 'Barnes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(60, 'Joseph', 'Kelly', NULL, 0, 2, '2023-11-01 13:24:47'),
-(61, 'Daniel', 'Coleman', NULL, 0, 2, '2023-11-01 13:24:47'),
-(62, 'William', 'Powell', NULL, 0, 2, '2023-11-01 13:24:47'),
-(63, 'Andrew', 'Simmons', NULL, 0, 2, '2023-11-01 13:24:47'),
-(64, 'Christopher', 'Long', NULL, 0, 2, '2023-11-01 13:24:47'),
-(65, 'David', 'Patterson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(66, 'James', 'Hughes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(67, 'Michael', 'Sanders', NULL, 0, 2, '2023-11-01 13:24:47'),
-(68, 'Jonathan', 'Murphy', NULL, 0, 2, '2023-11-01 13:24:47'),
-(69, 'Ethan', 'Morris', NULL, 0, 2, '2023-11-01 13:24:47'),
-(70, 'Oliver', 'Bennett', NULL, 0, 2, '2023-11-01 13:24:47'),
-(71, 'Alexander', 'Sullivan', NULL, 0, 2, '2023-11-01 13:24:47'),
-(72, 'Daniel', 'Morgan', NULL, 0, 2, '2023-11-01 13:24:47'),
-(73, 'Liam', 'Stewart', NULL, 0, 2, '2023-11-01 13:24:47'),
-(74, 'John', 'Ross', NULL, 0, 2, '2023-11-01 13:24:47'),
-(75, 'William', 'Henderson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(76, 'David', 'Baker', NULL, 0, 2, '2023-11-01 13:24:47'),
-(77, 'Michael', 'Wood', NULL, 0, 2, '2023-11-01 13:24:47'),
-(78, 'Jonathan', 'Russell', NULL, 0, 2, '2023-11-01 13:24:47'),
-(79, 'Ethan', 'Turner', NULL, 0, 2, '2023-11-01 13:24:47'),
-(80, 'Oliver', 'Howard', NULL, 0, 2, '2023-11-01 13:24:47'),
-(81, 'Samuel', 'Jenkins', NULL, 0, 2, '2023-11-01 13:24:47'),
-(82, 'Joseph', 'Scott', NULL, 0, 2, '2023-11-01 13:24:47'),
-(83, 'Christopher', 'Lewis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(84, 'David', 'Harris', NULL, 0, 2, '2023-11-01 13:24:47'),
-(85, 'Jonathan', 'Reed', NULL, 0, 2, '2023-11-01 13:24:47'),
-(86, 'Ethan', 'Foster', NULL, 0, 2, '2023-11-01 13:24:47'),
-(87, 'Benjamin', 'King', NULL, 0, 2, '2023-11-01 13:24:47'),
-(88, 'Ryan', 'White', NULL, 0, 2, '2023-11-01 13:24:47'),
-(89, 'Daniel', 'Coleman', NULL, 0, 2, '2023-11-01 13:24:47'),
-(90, 'Liam', 'Bailey', NULL, 0, 2, '2023-11-01 13:24:47'),
-(91, 'John', 'Allen', NULL, 0, 2, '2023-11-01 13:24:47'),
-(92, 'William', 'Patterson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(93, 'Andrew', 'Taylor', NULL, 0, 2, '2023-11-01 13:24:47'),
-(94, 'Nicholas', 'Wright', NULL, 0, 2, '2023-11-01 13:24:47'),
-(95, 'James', 'Davis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(96, 'Michael', 'Lee', NULL, 0, 2, '2023-11-01 13:24:47'),
-(97, 'Jonathan', 'Carter', NULL, 0, 2, '2023-11-01 13:24:47'),
-(98, 'Matthew', 'Martin', NULL, 0, 2, '2023-11-01 13:24:47'),
-(99, 'William', 'Ward', NULL, 0, 2, '2023-11-01 13:24:47'),
-(100, 'Caleb', 'Cox', NULL, 0, 2, '2023-11-01 13:24:47'),
-(101, 'Emma', 'Smith', NULL, 0, 1, '2023-11-01 13:24:47'),
-(102, 'Olivia', 'Johnson', NULL, 0, 1, '2023-11-01 13:24:47'),
-(103, 'Sophia', 'Brown', NULL, 0, 1, '2023-11-01 13:34:26'),
-(104, 'Isabella', 'Davis', NULL, 0, 1, '2023-11-01 13:37:49'),
-(105, 'Ava', 'Wilson', NULL, 0, 1, '2023-11-01 14:12:55'),
-(106, 'Mia', 'Lee', NULL, 0, 1, '2023-11-01 13:39:37'),
-(107, 'Charlotte', 'Harris', NULL, 0, 1, '2023-11-01 13:43:49'),
-(108, 'Amelia', 'Clark', NULL, 0, 1, '2023-11-01 13:24:47'),
-(109, 'Harper', 'Lewis', NULL, 0, 1, '2023-11-01 13:24:47'),
-(110, 'Evelyn', 'Hall', NULL, 0, 1, '2023-11-01 13:24:47'),
-(111, 'Abigail', 'Turner', NULL, 0, 1, '2023-11-01 13:24:47'),
-(112, 'Emily', 'Wright', NULL, 0, 1, '2023-11-01 13:37:57'),
-(113, 'Elizabeth', 'White', NULL, 0, 1, '2023-11-01 13:24:47'),
-(114, 'Sofia', 'Moore', NULL, 0, 1, '2023-11-01 13:43:58'),
-(115, 'Madison', 'Baker', NULL, 0, 1, '2023-11-01 13:38:57'),
-(116, 'Avery', 'Green', NULL, 0, 1, '2023-11-01 13:39:25'),
-(117, 'Ella', 'Adams', NULL, 0, 1, '2023-11-01 13:39:30'),
-(118, 'Scarlett', 'King', NULL, 0, 1, '2023-11-01 13:37:32'),
-(119, 'Grace', 'Scott', NULL, 0, 1, '2023-11-01 13:39:28'),
-(120, 'Lily', 'Young', NULL, 0, 1, '2023-11-01 13:39:52'),
-(121, 'Chloe', 'Mitchell', NULL, 0, 1, '2023-11-01 13:24:47'),
-(122, 'Camila', 'Walker', NULL, 0, 1, '2023-11-01 13:38:59'),
-(123, 'Penelope', 'Anderson', NULL, 0, 1, '2023-11-01 13:39:34'),
-(124, 'Victoria', 'Thomas', NULL, 0, 1, '2023-11-01 13:44:00'),
-(125, 'Aria', 'Jackson', NULL, 0, 1, '2023-11-01 14:12:58'),
-(126, 'Riley', 'Williams', NULL, 0, 1, '2023-11-01 13:37:37'),
-(127, 'Layla', 'Hall', NULL, 0, 1, '2023-11-01 14:12:58'),
-(128, 'Zoey', 'Allen', NULL, 0, 1, '2023-11-01 13:38:52'),
-(129, 'Mila', 'Martin', NULL, 0, 1, '2023-11-01 13:24:47'),
-(130, 'Addison', 'Taylor', NULL, 0, 1, '2023-11-01 13:24:47'),
-(131, 'Aubrey', 'Wood', NULL, 0, 1, '2023-11-01 13:39:52'),
-(132, 'Aurora', 'Harris', NULL, 0, 1, '2023-11-01 14:13:00'),
-(133, 'Hannah', 'Robinson', NULL, 0, 1, '2023-11-01 13:24:47'),
-(134, 'Aaliyah', 'Nelson', NULL, 0, 1, '2023-11-01 14:13:08'),
-(135, 'Savannah', 'Edwards', NULL, 0, 1, '2023-11-01 13:24:47'),
-(136, 'Anna', 'Turner', NULL, 0, 1, '2023-11-01 13:24:47'),
-(137, 'Natalie', 'Carter', NULL, 0, 1, '2023-11-01 13:39:33'),
-(138, 'Daisy', 'Parker', NULL, 0, 1, '2023-11-01 13:39:24'),
-(139, 'Valentina', 'Evans', NULL, 0, 1, '2023-11-01 13:24:47'),
-(140, 'Kayla', 'Collins', NULL, 0, 1, '2023-11-01 13:37:50'),
-(141, 'Lillian', 'Murphy', NULL, 0, 1, '2023-11-01 14:13:06'),
-(142, 'Eliana', 'Bennett', NULL, 0, 1, '2023-11-01 13:24:47'),
-(143, 'Olivia', 'Roberts', NULL, 0, 1, '2023-11-01 13:39:02'),
-(144, 'Natalie', 'Foster', NULL, 0, 1, '2023-11-01 13:24:47'),
-(145, 'Audrey', 'Gray', NULL, 0, 1, '2023-11-01 13:24:47'),
-(146, 'Lily', 'Richardson', NULL, 0, 1, '2023-11-01 13:37:42'),
-(147, 'Zoe', 'Reed', NULL, 0, 1, '2023-11-01 13:24:47'),
-(148, 'Lucy', 'Murray', NULL, 0, 1, '2023-11-01 14:12:53'),
-(149, 'Emily', 'Cole', NULL, 0, 1, '2023-11-01 13:37:39'),
-(150, 'Ava', 'Cooper', NULL, 0, 1, '2023-11-01 13:24:47'),
-(151, 'Emma', 'Ellis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(152, 'Nora', 'Howard', NULL, 0, 2, '2023-11-01 13:24:47'),
-(153, 'Luna', 'Ward', NULL, 0, 2, '2023-11-01 13:24:47'),
-(154, 'Mila', 'Cook', NULL, 0, 2, '2023-11-01 13:24:47'),
-(155, 'Sofia', 'Cox', NULL, 0, 2, '2023-11-01 13:24:47'),
-(156, 'Layla', 'Reed', NULL, 0, 2, '2023-11-01 13:24:47'),
-(157, 'Ella', 'Hayes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(158, 'Scarlett', 'Rose', NULL, 0, 2, '2023-11-01 13:24:47'),
-(159, 'Grace', 'Barnes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(160, 'Avery', 'Kelly', NULL, 0, 2, '2023-11-01 13:24:47'),
-(161, 'Hazel', 'Coleman', NULL, 0, 2, '2023-11-01 13:24:47'),
-(162, 'Camila', 'Powell', NULL, 0, 2, '2023-11-01 13:24:47'),
-(163, 'Penelope', 'Simmons', NULL, 0, 2, '2023-11-01 13:24:47'),
-(164, 'Victoria', 'Long', NULL, 0, 2, '2023-11-01 13:24:47'),
-(165, 'Aria', 'Patterson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(166, 'Riley', 'Hughes', NULL, 0, 2, '2023-11-01 13:24:47'),
-(167, 'Lily', 'Sanders', NULL, 0, 2, '2023-11-01 13:24:47'),
-(168, 'Chloe', 'Murphy', NULL, 0, 2, '2023-11-01 13:24:47'),
-(169, 'Natalie', 'Morris', NULL, 0, 2, '2023-11-01 13:24:47'),
-(170, 'Zoey', 'Bennett', NULL, 0, 2, '2023-11-01 13:24:47'),
-(171, 'Mila', 'Sullivan', NULL, 0, 2, '2023-11-01 13:24:47'),
-(172, 'Addison', 'Morgan', NULL, 0, 2, '2023-11-01 13:24:47'),
-(173, 'Aubrey', 'Stewart', NULL, 0, 2, '2023-11-01 13:24:47'),
-(174, 'Aurora', 'Ross', NULL, 0, 2, '2023-11-01 13:24:47'),
-(175, 'Hannah', 'Henderson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(176, 'Aaliyah', 'Baker', NULL, 0, 2, '2023-11-01 13:24:47'),
-(177, 'Savannah', 'Wood', NULL, 0, 2, '2023-11-01 13:24:47'),
-(178, 'Anna', 'Russell', NULL, 0, 2, '2023-11-01 13:24:47'),
-(179, 'Nora', 'Turner', NULL, 0, 2, '2023-11-01 13:24:47'),
-(180, 'Audrey', 'Howard', NULL, 0, 2, '2023-11-01 13:24:47'),
-(181, 'Luna', 'Jenkins', NULL, 0, 2, '2023-11-01 13:24:47'),
-(182, 'Nora', 'Scott', NULL, 0, 2, '2023-11-01 13:24:47'),
-(183, 'Luna', 'Lewis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(184, 'Sofia', 'Harris', NULL, 0, 2, '2023-11-01 13:24:47'),
-(185, 'Savannah', 'Reed', NULL, 0, 2, '2023-11-01 13:24:47'),
-(186, 'Anna', 'Foster', NULL, 0, 2, '2023-11-01 13:24:47'),
-(187, 'Aria', 'King', NULL, 0, 2, '2023-11-01 13:24:47'),
-(188, 'Hazel', 'White', NULL, 0, 2, '2023-11-01 13:24:47'),
-(189, 'Camila', 'Coleman', NULL, 0, 2, '2023-11-01 13:24:47'),
-(190, 'Penelope', 'Bailey', NULL, 0, 2, '2023-11-01 13:24:47'),
-(191, 'Victoria', 'Allen', NULL, 0, 2, '2023-11-01 13:24:47'),
-(192, 'Ava', 'Patterson', NULL, 0, 2, '2023-11-01 13:24:47'),
-(193, 'Avery', 'Taylor', NULL, 0, 2, '2023-11-01 13:24:47'),
-(194, 'Ella', 'Wright', NULL, 0, 2, '2023-11-01 13:24:47'),
-(195, 'Emma', 'Davis', NULL, 0, 2, '2023-11-01 13:24:47'),
-(196, 'Natalie', 'Lee', NULL, 0, 2, '2023-11-01 13:24:47'),
-(197, 'Olivia', 'Carter', NULL, 0, 2, '2023-11-01 13:24:47'),
-(198, 'Lily', 'Martin', NULL, 0, 2, '2023-11-01 13:24:47'),
-(199, 'Zoe', 'Ward', NULL, 0, 2, '2023-11-01 13:24:47'),
-(200, 'Lucy', 'Cox', NULL, 0, 2, '2023-11-01 13:24:47');
+INSERT INTO `patient` (`patientID`, `firstName`, `lastName`) VALUES
+(1, 'Liam', 'Smith'),
+(2, 'Noah', 'Johnson'),
+(3, 'Ethan', 'Brown'),
+(4, 'Benjamin', 'Davis'),
+(5, 'Alexander', 'Wilson'),
+(6, 'Samuel', 'Lee'),
+(7, 'William', 'Harris'),
+(8, 'James', 'Clark'),
+(9, 'Michael', 'Lewis'),
+(10, 'David', 'Hall'),
+(11, 'Daniel', 'Turner'),
+(12, 'Andrew', 'Wright'),
+(13, 'Christopher', 'White'),
+(14, 'Joseph', 'Moore'),
+(15, 'Nicholas', 'Baker'),
+(16, 'John', 'Green'),
+(17, 'Caleb', 'Adams'),
+(18, 'Matthew', 'King'),
+(19, 'Oliver', 'Scott'),
+(20, 'Anthony', 'Young'),
+(21, 'Mason', 'Mitchell'),
+(22, 'Henry', 'Walker'),
+(23, 'Jackson', 'Anderson'),
+(24, 'Oliver', 'Thomas'),
+(25, 'Samuel', 'Jackson'),
+(26, 'William', 'Williams'),
+(27, 'James', 'Hall'),
+(28, 'Michael', 'Allen'),
+(29, 'David', 'Martin'),
+(30, 'Daniel', 'Taylor'),
+(31, 'Andrew', 'Wood'),
+(32, 'Christopher', 'Harris'),
+(33, 'Joseph', 'Robinson'),
+(34, 'Nicholas', 'Nelson'),
+(35, 'John', 'Edwards'),
+(36, 'Caleb', 'Turner'),
+(37, 'Matthew', 'Carter'),
+(38, 'Samuel', 'Parker'),
+(39, 'Joseph', 'Evans'),
+(40, 'Isaac', 'Collins'),
+(41, 'Christopher', 'Murphy'),
+(42, 'David', 'Bennett'),
+(43, 'William', 'Roberts'),
+(44, 'Andrew', 'Foster'),
+(45, 'Nicholas', 'Gray'),
+(46, 'James', 'Richardson'),
+(47, 'Michael', 'Reed'),
+(48, 'Jonathan', 'Murray'),
+(49, 'Elijah', 'Cole'),
+(50, 'Benjamin', 'Cooper'),
+(51, 'Ryan', 'Ellis'),
+(52, 'Luke', 'Howard'),
+(53, 'Joshua', 'Ward'),
+(54, 'Nathan', 'Cook'),
+(55, 'Jackson', 'Cox'),
+(56, 'Aiden', 'Reed'),
+(57, 'Caleb', 'Hayes'),
+(58, 'Matthew', 'Rose'),
+(59, 'Samuel', 'Barnes'),
+(60, 'Joseph', 'Kelly'),
+(61, 'Daniel', 'Coleman'),
+(62, 'William', 'Powell'),
+(63, 'Andrew', 'Simmons'),
+(64, 'Christopher', 'Long'),
+(65, 'David', 'Patterson'),
+(66, 'James', 'Hughes'),
+(67, 'Michael', 'Sanders'),
+(68, 'Jonathan', 'Murphy'),
+(69, 'Ethan', 'Morris'),
+(70, 'Oliver', 'Bennett'),
+(71, 'Alexander', 'Sullivan'),
+(72, 'Daniel', 'Morgan'),
+(73, 'Liam', 'Stewart'),
+(74, 'John', 'Ross'),
+(75, 'William', 'Henderson'),
+(76, 'David', 'Baker'),
+(77, 'Michael', 'Wood'),
+(78, 'Jonathan', 'Russell'),
+(79, 'Ethan', 'Turner'),
+(80, 'Oliver', 'Howard'),
+(81, 'Samuel', 'Jenkins'),
+(82, 'Joseph', 'Scott'),
+(83, 'Christopher', 'Lewis'),
+(84, 'David', 'Harris'),
+(85, 'Jonathan', 'Reed'),
+(86, 'Ethan', 'Foster'),
+(87, 'Benjamin', 'King'),
+(88, 'Ryan', 'White'),
+(89, 'Daniel', 'Coleman'),
+(90, 'Liam', 'Bailey'),
+(91, 'John', 'Allen'),
+(92, 'William', 'Patterson'),
+(93, 'Andrew', 'Taylor'),
+(94, 'Nicholas', 'Wright'),
+(95, 'James', 'Davis'),
+(96, 'Michael', 'Lee'),
+(97, 'Jonathan', 'Carter'),
+(98, 'Matthew', 'Martin'),
+(99, 'William', 'Ward'),
+(100, 'Caleb', 'Cox'),
+(101, 'Emma', 'Smith'),
+(102, 'Olivia', 'Johnson'),
+(103, 'Sophia', 'Brown'),
+(104, 'Isabella', 'Davis'),
+(105, 'Ava', 'Wilson'),
+(106, 'Mia', 'Lee'),
+(107, 'Charlotte', 'Harris'),
+(108, 'Amelia', 'Clark'),
+(109, 'Harper', 'Lewis'),
+(110, 'Evelyn', 'Hall'),
+(111, 'Abigail', 'Turner'),
+(112, 'Emily', 'Wright'),
+(113, 'Elizabeth', 'White'),
+(114, 'Sofia', 'Moore'),
+(115, 'Madison', 'Baker'),
+(116, 'Avery', 'Green'),
+(117, 'Ella', 'Adams'),
+(118, 'Scarlett', 'King'),
+(119, 'Grace', 'Scott'),
+(120, 'Lily', 'Young'),
+(121, 'Chloe', 'Mitchell'),
+(122, 'Camila', 'Walker'),
+(123, 'Penelope', 'Anderson'),
+(124, 'Victoria', 'Thomas'),
+(125, 'Aria', 'Jackson'),
+(126, 'Riley', 'Williams'),
+(127, 'Layla', 'Hall'),
+(128, 'Zoey', 'Allen'),
+(129, 'Mila', 'Martin'),
+(130, 'Addison', 'Taylor'),
+(131, 'Aubrey', 'Wood'),
+(132, 'Aurora', 'Harris'),
+(133, 'Hannah', 'Robinson'),
+(134, 'Aaliyah', 'Nelson'),
+(135, 'Savannah', 'Edwards'),
+(136, 'Anna', 'Turner'),
+(137, 'Natalie', 'Carter'),
+(138, 'Daisy', 'Parker'),
+(139, 'Valentina', 'Evans'),
+(140, 'Kayla', 'Collins'),
+(141, 'Lillian', 'Murphy'),
+(142, 'Eliana', 'Bennett'),
+(143, 'Olivia', 'Roberts'),
+(144, 'Natalie', 'Foster'),
+(145, 'Audrey', 'Gray'),
+(146, 'Lily', 'Richardson'),
+(147, 'Zoe', 'Reed'),
+(148, 'Lucy', 'Murray'),
+(149, 'Emily', 'Cole'),
+(150, 'Ava', 'Cooper'),
+(151, 'Emma', 'Ellis'),
+(152, 'Nora', 'Howard'),
+(153, 'Luna', 'Ward'),
+(154, 'Mila', 'Cook'),
+(155, 'Sofia', 'Cox'),
+(156, 'Layla', 'Reed'),
+(157, 'Ella', 'Hayes'),
+(158, 'Scarlett', 'Rose'),
+(159, 'Grace', 'Barnes'),
+(160, 'Avery', 'Kelly'),
+(161, 'Hazel', 'Coleman'),
+(162, 'Camila', 'Powell'),
+(163, 'Penelope', 'Simmons'),
+(164, 'Victoria', 'Long'),
+(165, 'Aria', 'Patterson'),
+(166, 'Riley', 'Hughes'),
+(167, 'Lily', 'Sanders'),
+(168, 'Chloe', 'Murphy'),
+(169, 'Natalie', 'Morris'),
+(170, 'Zoey', 'Bennett'),
+(171, 'Mila', 'Sullivan'),
+(172, 'Addison', 'Morgan'),
+(173, 'Aubrey', 'Stewart'),
+(174, 'Aurora', 'Ross'),
+(175, 'Hannah', 'Henderson'),
+(176, 'Aaliyah', 'Baker'),
+(177, 'Savannah', 'Wood'),
+(178, 'Anna', 'Russell'),
+(179, 'Nora', 'Turner'),
+(180, 'Audrey', 'Howard'),
+(181, 'Luna', 'Jenkins'),
+(182, 'Nora', 'Scott'),
+(183, 'Luna', 'Lewis'),
+(184, 'Sofia', 'Harris'),
+(185, 'Savannah', 'Reed'),
+(186, 'Anna', 'Foster'),
+(187, 'Aria', 'King'),
+(188, 'Hazel', 'White'),
+(189, 'Camila', 'Coleman'),
+(190, 'Penelope', 'Bailey'),
+(191, 'Victoria', 'Allen'),
+(192, 'Ava', 'Patterson'),
+(193, 'Avery', 'Taylor'),
+(194, 'Ella', 'Wright'),
+(195, 'Emma', 'Davis'),
+(196, 'Natalie', 'Lee'),
+(197, 'Olivia', 'Carter'),
+(198, 'Lily', 'Martin'),
+(199, 'Zoe', 'Ward'),
+(200, 'Lucy', 'Cox');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `patient_management`
+--
+
+CREATE TABLE `patient_management` (
+  `patientID` int(11) DEFAULT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `diseaseID` int(11) DEFAULT NULL,
+  `atHospitalTime` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `patient_management`
+--
+
+INSERT INTO `patient_management` (`patientID`, `userID`, `diseaseID`, `atHospitalTime`) VALUES
+(143, 1, NULL, '2023-11-01 21:16:33'),
+(124, 1, NULL, '2023-11-01 21:16:33'),
+(148, 1, NULL, '2023-11-01 21:16:34'),
+(39, 1, NULL, '2023-11-01 21:16:35'),
+(64, 1, NULL, '2023-11-01 21:16:36'),
+(190, 1, NULL, '2023-11-01 21:16:37'),
+(119, 1, NULL, '2023-11-01 21:16:42');
 
 -- --------------------------------------------------------
 
@@ -379,10 +413,25 @@ INSERT INTO `user` (`userID`, `username`, `password`, `hospitalName`, `budget`) 
 --
 
 --
+-- Indexes for table `disease`
+--
+ALTER TABLE `disease`
+  ADD PRIMARY KEY (`diseaseID`),
+  ADD KEY `roomTypeID` (`roomTypeID`);
+
+--
 -- Indexes for table `patient`
 --
 ALTER TABLE `patient`
   ADD PRIMARY KEY (`patientID`);
+
+--
+-- Indexes for table `patient_management`
+--
+ALTER TABLE `patient_management`
+  ADD KEY `patientID` (`patientID`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `diseaseID` (`diseaseID`);
 
 --
 -- Indexes for table `room`
@@ -423,12 +472,6 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `patient`
---
-ALTER TABLE `patient`
-  MODIFY `patientID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
-
---
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
@@ -461,6 +504,20 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `disease`
+--
+ALTER TABLE `disease`
+  ADD CONSTRAINT `disease_ibfk_1` FOREIGN KEY (`roomTypeID`) REFERENCES `room_type` (`roomTypeID`);
+
+--
+-- Constraints for table `patient_management`
+--
+ALTER TABLE `patient_management`
+  ADD CONSTRAINT `patient_management_ibfk_1` FOREIGN KEY (`patientID`) REFERENCES `patient` (`patientID`),
+  ADD CONSTRAINT `patient_management_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
+  ADD CONSTRAINT `patient_management_ibfk_3` FOREIGN KEY (`diseaseID`) REFERENCES `disease` (`diseaseID`);
 
 --
 -- Constraints for table `room`
