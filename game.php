@@ -18,12 +18,20 @@
     }
 
     function setRoomId(roomId, price) {
-    console.log("setRoomId function called");
     document.getElementById("roomIdInput").value = roomId;
     document.getElementById("sellAmount").innerHTML = price / 2;
     document.getElementById("sellInput").value = price / 2;
     $('#sellRoomModal').modal('show');
 }
+
+    function setPatient(patientID, firstName,lastName) {
+        let argument=firstName+" "+lastName;
+        let avatarURL = "https://api.dicebear.com/7.x/avataaars/svg?size=150&style=circle&seed=" + encodeURIComponent(argument) + ".svg";
+        document.getElementById("avatar").src=avatarURL;
+        document.getElementById("firstName").innerHTML="First Name: "+ firstName;
+        document.getElementById("lastName").innerHTML ="Last Name: " + lastName;
+        $('#displayPatientModal').modal('show');
+    }
 </script>
 <body class="bg-light">
     <?php
@@ -53,10 +61,6 @@
                             $req->execute([$username]);
                             $budget = $req->fetch()['budget'];
                             $_SESSION['budget']=$budget;
-                            //$req = $bdd->prepare("SELECT userID FROM user WHERE username = ?;");
-                            //$req->execute([$username]);
-                            //$userID = $req->fetch()['userID'];
-                            //$_SESSION['userID']=$userID;
                         ?>
                         
                         <p>Welcome, <?php echo $username; ?>!</p>
@@ -78,14 +82,12 @@
                         $req = $bdd->prepare("SELECT * FROM patient WHERE userID=? AND atHospital=1 ORDER BY atHospitalTime DESC;");
                         $req->execute([$_SESSION['userID']]);
                         while ($data = $req->fetch()) {
-                            //$sreq = $bdd->prepare("SELECT salary FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
-                            //$sreq->execute([$data['staffID']]);
-                            //$sdata = $sreq->fetch();
-                            //if($data){
-                            //$treq = $bdd->prepare("SELECT description FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
-                            //$treq->execute([$data['staffID']]);
-                            //$tdata = $treq->fetch();
-                            echo '<li><a href="patient_info.php?patientID=' . $data["patientID"] . '">' . $data["firstName"] . ' ' . $data["lastName"] . '</a></li>';
+                            $firstName = $data['firstName'];
+                            $lastName = $data['lastName'];
+                            $patientID = $data['patientID'];
+                            echo '<li><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' . 
+                            urlencode($data['firstName'] .' '. $data['lastName']) . '.svg" alt="avatar" />
+                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
                             $patientFetched = true;
                             }
                         if(!$patientFetched){
@@ -280,6 +282,25 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="displayPatientModal" tabindex="-1" aria-labelledby="displayPatientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="displayPatientModalLabel">Patient Information</h5>
+            </div>
+            <div class="modal-body">
+                <img id="avatar" alt="avatar" />
+                <h5 id="firstName"></h5>
+                <h5 id="lastName"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
