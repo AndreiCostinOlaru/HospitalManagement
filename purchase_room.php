@@ -20,6 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rreq->execute([$roomTypeID]);
     $rooms=$rreq->fetch()['rooms'];
 
+    $rreq = $bdd->prepare("SELECT COUNT(*) AS rooms FROM room;");
+    $rreq->execute([]);
+    $allRooms=$rreq->fetch()['rooms'];
+
 
     $username = $_SESSION['username'];
     $breq = $bdd->prepare("SELECT budget FROM user WHERE username = ?;");
@@ -57,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $jreq->execute([$_SESSION['userID'],$janitor]);
         $janitors = $jreq->fetch()['janitor_count'];
 
-        if ($doctors-$req_docs>=$rooms && $nurses-$req_nurses>=$rooms && $janitors*5-$req_janitors>=$rooms) {
+        if ($doctors-$req_docs>=$rooms && $nurses-$req_nurses>=$rooms && $janitors*5-$req_janitors>=$allRooms) {
             $budget = $budget - $price;
 
             $updateBudgetQuery = $bdd->prepare("UPDATE user SET budget = ? WHERE userID = ?;");
