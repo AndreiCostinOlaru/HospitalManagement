@@ -24,7 +24,6 @@
     document.getElementById("sellInput").value = price / 2;
     $('#sellRoomModal').modal('show');
 }
-
 </script>
 <body class="bg-light">
     <?php
@@ -54,14 +53,45 @@
                             $req->execute([$username]);
                             $budget = $req->fetch()['budget'];
                             $_SESSION['budget']=$budget;
+                            //$req = $bdd->prepare("SELECT userID FROM user WHERE username = ?;");
+                            //$req->execute([$username]);
+                            //$userID = $req->fetch()['userID'];
+                            //$_SESSION['userID']=$userID;
                         ?>
                         
                         <p>Welcome, <?php echo $username; ?>!</p>
-                        <p>Your Budget: $<?php echo $budget; ?></p>
+                        <p>Your Budget: $<?php echo $budget; ?> | <a href=get_patient.php>Get Patient</a></p>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6" >
+                <div class="card" style="overflow-y: scroll;">
+                    <div class="card-body">
+                        <?php
+                        $patientFetched=false;
+                        $req = $bdd->prepare("SELECT * FROM patient WHERE userID=? AND atHospital=1 ORDER BY atHospitalTime DESC;");
+                        $req->execute([$_SESSION['userID']]);
+                        while ($data = $req->fetch()) {
+                            //$sreq = $bdd->prepare("SELECT salary FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
+                            //$sreq->execute([$data['staffID']]);
+                            //$sdata = $sreq->fetch();
+                            //if($data){
+                            //$treq = $bdd->prepare("SELECT description FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
+                            //$treq->execute([$data['staffID']]);
+                            //$tdata = $treq->fetch();
+                            echo '<li><a href="patient_info.php?patientID=' . $data["patientID"] . '">' . $data["firstName"] . ' ' . $data["lastName"] . '</a></li>';
+                            $patientFetched = true;
+                            }
+                        if(!$patientFetched){
+                            echo "<li>No patients yet.</li>";
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
