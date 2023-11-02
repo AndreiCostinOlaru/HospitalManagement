@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2023 at 12:23 PM
+-- Generation Time: Nov 02, 2023 at 04:45 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -32,6 +32,14 @@ CREATE TABLE `disease` (
   `roomTypeID` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `disease`
+--
+
+INSERT INTO `disease` (`diseaseID`, `roomTypeID`, `name`) VALUES
+(1, 1, 'Unknown'),
+(2, NULL, 'Cured');
 
 -- --------------------------------------------------------
 
@@ -260,23 +268,16 @@ INSERT INTO `patient` (`patientID`, `firstName`, `lastName`) VALUES
 CREATE TABLE `patient_management` (
   `patientID` int(11) DEFAULT NULL,
   `userID` int(11) DEFAULT NULL,
-  `diseaseID` int(11) DEFAULT NULL,
-  `atHospitalTime` timestamp NOT NULL DEFAULT current_timestamp()
+  `atHospitalTime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `diseaseID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `patient_management`
 --
 
-INSERT INTO `patient_management` (`patientID`, `userID`, `diseaseID`, `atHospitalTime`) VALUES
-(143, 1, NULL, '2023-11-01 21:16:33'),
-(124, 1, NULL, '2023-11-01 21:16:33'),
-(148, 1, NULL, '2023-11-01 21:16:34'),
-(39, 1, NULL, '2023-11-01 21:16:35'),
-(64, 1, NULL, '2023-11-01 21:16:36'),
-(190, 1, NULL, '2023-11-01 21:16:37'),
-(119, 1, NULL, '2023-11-01 21:16:42'),
-(136, 1, NULL, '2023-11-02 11:18:29');
+INSERT INTO `patient_management` (`patientID`, `userID`, `atHospitalTime`, `diseaseID`) VALUES
+(200, 1, '2023-11-02 15:44:38', 1);
 
 -- --------------------------------------------------------
 
@@ -288,19 +289,20 @@ CREATE TABLE `room` (
   `roomID` int(11) NOT NULL,
   `availability` tinyint(1) DEFAULT NULL,
   `roomTypeID` int(11) DEFAULT NULL,
-  `userID` int(11) DEFAULT NULL
+  `userID` int(11) DEFAULT NULL,
+  `inUse` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `room`
 --
 
-INSERT INTO `room` (`roomID`, `availability`, `roomTypeID`, `userID`) VALUES
-(6, 3, 1, 1),
-(7, 1, 2, 1),
-(8, 3, 1, 1),
-(9, 3, 1, 1),
-(16, 3, 1, 1);
+INSERT INTO `room` (`roomID`, `availability`, `roomTypeID`, `userID`, `inUse`) VALUES
+(6, 3, 1, 1, 1),
+(7, 1, 2, 1, 0),
+(8, 3, 1, 1, 1),
+(9, 3, 1, 1, 1),
+(16, 3, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -314,17 +316,16 @@ CREATE TABLE `room_type` (
   `description` varchar(255) DEFAULT NULL,
   `num_janitors` int(11) DEFAULT NULL,
   `num_doctors` int(11) DEFAULT NULL,
-  `num_nurses` int(11) DEFAULT NULL,
-  `capacity` int(11) DEFAULT NULL
+  `num_nurses` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `room_type`
 --
 
-INSERT INTO `room_type` (`roomTypeID`, `price`, `description`, `num_janitors`, `num_doctors`, `num_nurses`, `capacity`) VALUES
-(1, 400, 'Consulting Room', 1, 1, 1, 3),
-(2, 500, 'Operating Room', 1, 1, 1, 1);
+INSERT INTO `room_type` (`roomTypeID`, `price`, `description`, `num_janitors`, `num_doctors`, `num_nurses`) VALUES
+(1, 400, 'Consulting Room', 1, 1, 1),
+(2, 500, 'Operating Room', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -406,7 +407,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`userID`, `username`, `password`, `hospitalName`, `budget`) VALUES
-(1, 'andrei', 'andrei', 'Andrei', 2350),
+(1, 'andrei', 'andrei', 'Andrei', 3100),
 (2, 'chris', 'chris', 'chris', 1000);
 
 --
@@ -471,6 +472,12 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `disease`
+--
+ALTER TABLE `disease`
+  MODIFY `diseaseID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `room`

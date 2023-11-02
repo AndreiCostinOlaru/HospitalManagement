@@ -24,7 +24,7 @@
     $('#sellRoomModal').modal('show');
 }
 
-    function setPatient(patientID, firstName,lastName,disease) {
+    function setPatient(patientID, firstName,lastName,disease,diseaseID) {
         let argument=firstName+" "+lastName;
         let avatarURL = "https://api.dicebear.com/7.x/avataaars/svg?size=150&style=circle&seed=" + encodeURIComponent(argument) + ".svg";
         document.getElementById("avatar").src=avatarURL;
@@ -34,6 +34,8 @@
             disease="Unknown";
         }
         document.getElementById("disease").innerHTML="Disease: "+ disease;
+        document.getElementById("patientIDInput").value = patientID;
+        document.getElementById("diseaseIDInput").value = diseaseID;
         $('#displayPatientModal').modal('show');
     }
 </script>
@@ -48,6 +50,11 @@
         echo "<script>alert('Purchase failed.');</script>";
         $_SESSION["purchase_failed"] = false;
     }
+    if (isset($_SESSION["sending_failed"]  ) && $_SESSION["sending_failed"]) {
+        echo "<script>alert('Could not send patient at the moment.');</script>";
+        $_SESSION["sending_failed"]   = false;
+    }
+    
 
 
     ?>
@@ -83,16 +90,17 @@
                     <div class="card-body">
                         <?php
                         $patientFetched=false;
-                        $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID WHERE userID=? ORDER BY atHospitalTime DESC;");
+                        $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID INNER JOIN disease d ON pm.diseaseID=d.diseaseID WHERE userID=? ORDER BY atHospitalTime DESC;");
                         $req->execute([$_SESSION['userID']]);
                         while ($data = $req->fetch()) {
                             $firstName = $data['firstName'];
                             $lastName = $data['lastName'];
                             $patientID = $data['patientID'];
-                            $disease = $data['diseaseID'];
+                            $diseaseID = $data['diseaseID'];
+                            $disease = $data['name'];
                             echo '<li><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' . 
                             urlencode($data['firstName'] .' '. $data['lastName']) . '.svg" alt="avatar" />
-                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
+                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\', \'' . $diseaseID . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
                             $patientFetched = true;
                             }
                         if(!$patientFetched){
@@ -304,17 +312,19 @@
                 <h5 id="firstName"></h5>
                 <h5 id="lastName"></h5>
                 <h5 id="disease"></h5>
+                <form action="send_patient.php" method="POST">
                 <select class="form-control" name="sendPatientRoom">
                      <?php
-                        $req = $bdd->prepare("SELECT DISTINCT description FROM room r INNER JOIN room_type rt ON r.roomTypeID=rt.roomTypeID WHERE userID=?;");
+                        $req = $bdd->prepare("SELECT DISTINCT description,r.roomTypeID FROM room r INNER JOIN room_type rt ON r.roomTypeID=rt.roomTypeID WHERE userID=?;");
                         $req->execute( [$_SESSION["userID"]]);
                         while($data = $req->fetch()) {
-                            echo '<option value="' . $data['description'] . '">'. $data["description"] .'</option>';
+                            echo '<option value="' . $data['roomTypeID'] . '">'. $data["description"] .'</option>';      
                         }
+                        echo '<option value="0">Home</option>';
                     ?> 
-                </select>
-                <form action="send_patient.php" method="POST">
-                    <input type="hidden" name="patientID" id="patientID">
+                 </select> 
+                    <input type="hidden" name="patientID" id="patientIDInput">
+                    <input type="hidden" name="diseaseID" id="diseaseIDInput">
                     <button type="submit" class="btn">Send Patient</button>
                 </form>
             </div>

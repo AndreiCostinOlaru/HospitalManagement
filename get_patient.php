@@ -15,7 +15,7 @@
     }
     else {
         $randomPatient = rand(1, $pdata);
-        $disease=NULL;
+        $disease=1;
         $req = $bdd->prepare("SELECT COUNT(*) as patients FROM patient_management WHERE userID=? AND patientID=?;");
         $req->execute([$_SESSION['userID'],$randomPatient]);
         $data = $req->fetch()['patients'];
