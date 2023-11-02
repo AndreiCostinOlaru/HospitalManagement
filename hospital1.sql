@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2023 at 10:19 PM
+-- Generation Time: Nov 02, 2023 at 12:23 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -275,7 +275,8 @@ INSERT INTO `patient_management` (`patientID`, `userID`, `diseaseID`, `atHospita
 (39, 1, NULL, '2023-11-01 21:16:35'),
 (64, 1, NULL, '2023-11-01 21:16:36'),
 (190, 1, NULL, '2023-11-01 21:16:37'),
-(119, 1, NULL, '2023-11-01 21:16:42');
+(119, 1, NULL, '2023-11-01 21:16:42'),
+(136, 1, NULL, '2023-11-02 11:18:29');
 
 -- --------------------------------------------------------
 
@@ -322,7 +323,7 @@ CREATE TABLE `room_type` (
 --
 
 INSERT INTO `room_type` (`roomTypeID`, `price`, `description`, `num_janitors`, `num_doctors`, `num_nurses`, `capacity`) VALUES
-(1, 400, 'General Ward', 1, 1, 1, 3),
+(1, 400, 'Consulting Room', 1, 1, 1, 3),
 (2, 500, 'Operating Room', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
