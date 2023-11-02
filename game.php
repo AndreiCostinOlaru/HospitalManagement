@@ -304,6 +304,19 @@
                 <h5 id="firstName"></h5>
                 <h5 id="lastName"></h5>
                 <h5 id="disease"></h5>
+                <select class="form-control" name="sendPatientRoom">
+                     <?php
+                        $req = $bdd->prepare("SELECT DISTINCT description FROM room r INNER JOIN room_type rt ON r.roomTypeID=rt.roomTypeID WHERE userID=?;");
+                        $req->execute( [$_SESSION["userID"]]);
+                        while($data = $req->fetch()) {
+                            echo '<option value="' . $data['description'] . '">'. $data["description"] .'</option>';
+                        }
+                    ?> 
+                </select>
+                <form action="send_patient.php" method="POST">
+                    <input type="hidden" name="patientID" id="patientID">
+                    <button type="submit" class="btn">Send Patient</button>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

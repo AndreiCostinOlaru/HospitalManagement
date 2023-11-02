@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $budget = $breq->fetch()['budget'];
 
     switch($description){
-        case "General Ward": $doc="General Practitioner"; $nurse="General Nurse Practitioner"; break;
+        case "Consulting Room": $doc="General Practitioner"; $nurse="General Nurse Practitioner"; break;
         case "Operating Room": $doc="Surgeon"; $nurse="Operating Room Nurse";break;
         case "Delivery Room": $doc="Obstetrician"; $nurse="Obstetrical Nurse";break;
         case "Emergency Room": $doc=" Emergency Physician"; $nurse="Emergency Room Nurse";break;
