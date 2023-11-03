@@ -1,9 +1,9 @@
 html {
-    size: 100vh;
+    size: 100%;
 }
 
 body {
-    size: 100vh;
+    size: 100%;
     margin: 0;
     background: linear-gradient(160deg, #95ccc5, #2e5668);
 }

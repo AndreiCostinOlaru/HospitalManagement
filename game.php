@@ -17,6 +17,13 @@
         $('#fireStaffModal').modal('show');
     }
 
+    function setStaffIdUpgrade(staffId, salary) {
+        document.getElementById("staffIdInputUpgrade").value = staffId;
+        document.getElementById("upgradeAmount").innerHTML = salary/2;
+        document.getElementById("upgradeInput").value = salary/2;
+        $('#upgradeStaffModal').modal('show');
+    }
+
     function setRoomId(roomId, price) {
     document.getElementById("roomIdInput").value = roomId;
     document.getElementById("sellAmount").innerHTML = price / 2;
@@ -54,7 +61,15 @@
         echo "<script>alert('Could not send patient at the moment.');</script>";
         $_SESSION["sending_failed"]   = false;
     }
-    
+    if (isset($_SESSION["patient_failed"]  ) && $_SESSION["patient_failed"]) {
+        echo '<script>alert("There are no more patients.");</script>';
+        $_SESSION["patient_failed"]   = false;
+    }
+    if (isset($_SESSION["upgrade_failed"]  ) && $_SESSION["upgrade_failed"]) {
+        echo '<script>alert("Staff already has maximum level.");</script>';
+        $_SESSION["upgrade_failed"]   = false;
+    }
+
 
 
     ?>
@@ -66,10 +81,11 @@
                         <h2 class="card-title">Welcome to the Game</h2>
                         
                         <?php
+                            $userID = $_SESSION['userID'];
                             $username = $_SESSION['username'];
                             $bdd = new PDO("mysql:host=localhost;dbname=hospital;charset=utf8", "root", "");
-                            $req = $bdd->prepare("SELECT budget FROM user WHERE username = ?;");
-                            $req->execute([$username]);
+                            $req = $bdd->prepare("SELECT budget FROM user WHERE userID = ?;");
+                            $req->execute([$userID]);
                             $budget = $req->fetch()['budget'];
                             $_SESSION['budget']=$budget;
                         ?>
@@ -166,7 +182,7 @@
                 <h5 class="modal-title" id="displayHiredStaffModalLabel">Hired Staff</h5>
             </div>
             <div class="modal-body">
-                <ul>
+                <ul style="list-style: none">
                     <?php
                     $staffFetched=false;
                     $req = $bdd->prepare("SELECT * FROM staff WHERE userID=?;");
@@ -180,6 +196,7 @@
                         $treq->execute([$data['staffID']]);
                         $tdata = $treq->fetch();
                         echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . ' | '. $tdata['description'] .'
+                                <button type="button" class="btn" onclick="setStaffIdUpgrade('.$data['staffID'].','. $sdata['salary'] .')">Upgrade</button>
                                 <button type="button" class="btn btn-danger" onclick="setStaffId('.$data['staffID'].','. $sdata['salary'] .')">Fire</button>
                         </li>';
                         $staffFetched = true;
@@ -199,6 +216,28 @@
 </div>
 
 
+<div class="modal fade" id="upgradeStaffModal" tabindex="-1" aria-labelledby="upgradeStaffModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="upgradeStaffModalLabel">Upgrade Staff</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to upgrade this staff member?</p>
+                <p>You will have to pay $<span id="upgradeAmount"></span> to upgrade this staff member.</p>
+                <form action="upgrade_staff.php" method="POST">
+                    <input type="hidden" name="staff_id" id="staffIdInputUpgrade">
+                    <input type="hidden" name="upgrade_amount" id="upgradeInput">
+                    <button type="submit" class="btn btn-danger">Confirm Upgrade</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="fireStaffModal" tabindex="-1" aria-labelledby="fireStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -263,7 +302,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul>
+                <ul style="list-style: ordered">
                     <?php
                     $req = $bdd->prepare("SELECT * FROM room WHERE userID=?;");
                     $req->execute([$_SESSION['userID']]);
@@ -271,7 +310,7 @@
                         $sreq = $bdd->prepare("SELECT price,description FROM room_type rt INNER JOIN room r ON rt.roomTypeID=r.roomTypeID WHERE r.roomID=?;");
                         $sreq->execute([$data['roomID']]);
                         $sdata = $sreq->fetch();
-                        echo '<li>Room number: ' . $data["roomID"] . ' - Type: ' . $sdata["description"] . ' - Cost: ' . $sdata["price"] . '
+                        echo '<li> Type: ' . $sdata["description"] . ' - Cost: ' . $sdata["price"] . '
                             <button type="button" class="btn btn-danger" onclick="setRoomId('.$data['roomID'].','.$sdata['price'].')">Sell</button>
                         </li>';
                     }

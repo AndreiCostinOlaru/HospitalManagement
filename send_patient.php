@@ -11,10 +11,13 @@
     $data=$req->fetch();
     $diseaseName=$data['name'];
     $roomTypeNeeded=$data['roomTypeID'];
+    $req = $bdd->prepare("SELECT COUNT(*) as diseases FROM disease;");
+    $req->execute([]);
+    $diseases=$req->fetch()['diseases'];
 
  if($roomTypeID!=0 && $diseaseName!="Cured"){
     $req = $bdd->prepare("SELECT COUNT(*) as roomsAvailable FROM room WHERE userID = ? AND roomTypeID= ? AND inUse=?;");
-    $req->execute([$userID,$roomTypeNeeded,0]);
+    $req->execute([$userID,$roomTypeID,0]);
     $roomsAvailable=$req->fetch()['roomsAvailable'];
 
     if($roomsAvailable==0){
@@ -29,17 +32,16 @@
         $req->execute([$roomToUse]);
         if($roomTypeID==$roomTypeNeeded){
             if($diseaseName=="Unknown"){
-               // $diseaseID=rand();
-               $diseaseID=2;
+               $diseaseID=rand(3,$diseases);
             }
             else{
-                $diseaseID=2;//ID for cured
+                $diseaseID=2;//Cured
             }
             $req = $bdd->prepare("UPDATE patient_management SET diseaseID = ? WHERE patientID = ? AND userID = ?;");
             $req->execute([$diseaseID,$patientID,$userID]);
-            $req = $bdd->prepare("UPDATE room SET inUse = 0 WHERE roomID = ?;");
-            $req->execute([$roomToUse]);
         }
+        $req = $bdd->prepare("UPDATE room SET inUse = 0 WHERE roomID = ?;");
+        $req->execute([$roomToUse]);
     }
 }
     else if($roomTypeID==0 && $diseaseName=="Cured"){

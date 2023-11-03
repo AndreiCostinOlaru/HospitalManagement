@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data=$req->fetch();
     $price = $data['price'];
     $description=$data['description'];
-    $capacity = $data['capacity'];
     $req_docs = $data['num_doctors'];
     $req_nurses = $data['num_nurses'];
     $req_janitors = $data['num_janitors'];
@@ -33,11 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     switch($description){
         case "Consulting Room": $doc="General Practitioner"; $nurse="General Nurse Practitioner"; break;
         case "Operating Room": $doc="Surgeon"; $nurse="Operating Room Nurse";break;
-        case "Delivery Room": $doc="Obstetrician"; $nurse="Obstetrical Nurse";break;
-        case "Emergency Room": $doc=" Emergency Physician"; $nurse="Emergency Room Nurse";break;
-        case "Isolation Room": $doc="Infectious Disease Specialist"; $nurse=" Infection Control Nurse.";break;
-        case "Pediatric Room": $doc="Pediatrician"; $nurse="Pediatric Nurse";break;
+        case "Radiology Room": $doc="Radiologist"; $nurse="Radiology Nurse";break;
+        case "Isolation Room": $doc="Infectious Disease Specialist"; $nurse="Infection Control Nurse";break;
         case "Psychiatric Room": $doc="Psychiatrist"; $nurse="Psychiatric Nurse";break;
+        case "Physiotherapy Room": $doc="Physiotherapist"; $nurse="General Nurse Practitioner";break;
+        case "Neurology Room": $doc="Neurologist"; $nurse="Neurology Nurse";break;
+        case "ICU Room": $doc="Intensivist"; $nurse="Intensive Care Nurse";break;
+        case "Endoscopy Room": $doc="Endoscopist"; $nurse="Endoscopy Nurse";break;
+        case "Ultrasound Room": $doc=" Ultrasound Technician"; $nurse="General Nurse Practitioner";break;
+        case "Pharmacy Room": $doc="General Practitioner"; $nurse="General Nurse Practitioner";break;
     }
     $janitor= "Janitor";
     $req = $bdd->prepare("SELECT staffTypeID FROM staff_type WHERE description = ?;");
@@ -51,17 +54,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $janitor=$req->fetch()['staffTypeID'];
 
     if ($budget >= $price) {
-        $dreq = $bdd->prepare("SELECT COUNT(*) AS doctor_count FROM staff WHERE userID = ? AND staffTypeID=?;");
+        $dreq = $bdd->prepare("SELECT COUNT(*) AS doctor_count, SUM(level) as doctor_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $dreq->execute([$_SESSION['userID'], $doctor_type]);
-        $doctors = $dreq->fetch()['doctor_count'];
-        $nreq = $bdd->prepare("SELECT COUNT(*) AS nurse_count FROM staff WHERE userID = ? AND staffTypeID=?;");
+        $doctorsData = $dreq->fetch()['doctor_count'];
+        $doctors=$doctorsData['doctor_count'];
+        $levelDoc=$doctorsData['doctor_count'];
+        $nreq = $bdd->prepare("SELECT COUNT(*) AS nurse_count, SUM(level) as nurse_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $nreq->execute([$_SESSION['userID'],$nurse_type]);
-        $nurses = $nreq->fetch()['nurse_count'];
-        $jreq = $bdd->prepare("SELECT COUNT(*) AS janitor_count FROM staff WHERE userID = ? AND staffTypeID=?;");
+        $nurseData = $nreq->fetch();
+        $nurse=$nurseData['nurse_count'];
+        $levelNurse=$nurseData['nurse_level'];
+        $jreq = $bdd->prepare("SELECT COUNT(*) AS janitor_count, SUM(level) as janitor_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $jreq->execute([$_SESSION['userID'],$janitor]);
-        $janitors = $jreq->fetch()['janitor_count'];
+        $janitorData = $jreq->fetch();
+        $janitors=$janitorData['janitor_count'];
+        $levelJanitor=$janitorData['janitor_level'];
 
-        if ($doctors-$req_docs>=$rooms && $nurses-$req_nurses>=$rooms && $janitors*5-$req_janitors>=$allRooms) {
+        if ($doctors-$req_docs+$levelDoc>=$rooms && $nurses-$req_nurses+$levelNurse>=$rooms && $janitors*5-$req_janitors+$levelJanitor>=$allRooms) {
             $budget = $budget - $price;
 
             $updateBudgetQuery = $bdd->prepare("UPDATE user SET budget = ? WHERE userID = ?;");

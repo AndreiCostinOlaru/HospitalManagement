@@ -11,7 +11,8 @@
     $pdata = $nreq->fetch()['patients'];
 
     if($ndata==$pdata){
-        echo '<script>alert("There are no more patients.");</script>';
+        $_SESSION["patient_failed"] = true; 
+        header("Location:game.php");
     }
     else {
         $randomPatient = rand(1, $pdata);
