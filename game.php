@@ -39,7 +39,7 @@
         $('#displayPatientModal').modal('show');
     }
 </script>
-<body class="bg-light">
+<body class="bg-light" style="height: 90%">
     <?php
       session_start();
       if (isset($_SESSION["hire_failed"]) && $_SESSION["hire_failed"]) {
@@ -75,7 +75,7 @@
                         ?>
                         
                         <p>Welcome, <?php echo $username; ?>!</p>
-                        <p>Your Budget: $<?php echo $budget; ?> | <a href=get_patient.php>Get Patient</a></p>
+                        <p>Your Budget: $<?php echo $budget; ?></p>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
@@ -84,29 +84,36 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6" >
-                <div class="card">
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div class="card" style="overflow-y: auto; max-height: 67vh">
                     <div class="card-body">
-                        <?php
-                        $patientFetched=false;
-                        $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID INNER JOIN disease d ON pm.diseaseID=d.diseaseID WHERE userID=? ORDER BY atHospitalTime DESC;");
-                        $req->execute([$_SESSION['userID']]);
-                        while ($data = $req->fetch()) {
-                            $firstName = $data['firstName'];
-                            $lastName = $data['lastName'];
-                            $patientID = $data['patientID'];
-                            $diseaseID = $data['diseaseID'];
-                            $disease = $data['name'];
-                            echo '<li><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' . 
-                            urlencode($data['firstName'] .' '. $data['lastName']) . '.svg" alt="avatar" />
-                            <button type="button" class="btn" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\', \'' . $diseaseID . '\')">' . $firstName . ' ' . $lastName . '</button></li>';
-                            $patientFetched = true;
+                        <div class="container text-center">
+                            <?php
+                            $patientFetched = false;
+                            $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID INNER JOIN disease d ON pm.diseaseID=d.diseaseID WHERE userID=? ORDER BY atHospitalTime DESC;");
+                            $req->execute([$_SESSION['userID']]);
+                            $aux = 0;
+                            echo '<div class="d-flex flex-wrap">';
+                            echo '<a class="btn p-2 flex-fill align-self-center" href=get_patient.php><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg> New Patient</a>';
+                            while ($data = $req->fetch()) {
+                                $aux = $aux + 1;
+                                $firstName = $data['firstName'];
+                                $lastName = $data['lastName'];
+                                $patientID = $data['patientID'];
+                                $diseaseID = $data['diseaseID'];
+                                $disease = $data['name'];
+                                echo '<button type="button" style="margin: 5px;
+                                background-color: #95ccc5;" class="btn p-2 flex-fill" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\', \'' . $diseaseID . '\')"><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' .
+                                urlencode($data['firstName'] . ' ' . $data['lastName']) . '.svg" alt="avatar" />' . $firstName . ' ' . $lastName . '</button>';
+                                $patientFetched = true;
                             }
-                        if(!$patientFetched){
-                            echo "<li>No patients yet.</li>";
-                        }
-                        ?>
+                            echo '</div>';
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -325,6 +332,7 @@
                  </select> 
                     <input type="hidden" name="patientID" id="patientIDInput">
                     <input type="hidden" name="diseaseID" id="diseaseIDInput">
+                    <br>
                     <button type="submit" class="btn">Send Patient</button>
                 </form>
             </div>
