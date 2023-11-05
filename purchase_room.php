@@ -52,17 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $req = $bdd->prepare("SELECT staffTypeID FROM staff_type WHERE description = ?;");
     $req->execute([$janitor]);
     $janitor=$req->fetch()['staffTypeID'];
-
+    echo $doctor_type;
     if ($budget >= $price) {
         $dreq = $bdd->prepare("SELECT COUNT(*) AS doctor_count, SUM(level) as doctor_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $dreq->execute([$_SESSION['userID'], $doctor_type]);
-        $doctorsData = $dreq->fetch()['doctor_count'];
+        $doctorsData = $dreq->fetch();
         $doctors=$doctorsData['doctor_count'];
         $levelDoc=$doctorsData['doctor_count'];
         $nreq = $bdd->prepare("SELECT COUNT(*) AS nurse_count, SUM(level) as nurse_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $nreq->execute([$_SESSION['userID'],$nurse_type]);
         $nurseData = $nreq->fetch();
-        $nurse=$nurseData['nurse_count'];
+        $nurses=$nurseData['nurse_count'];
         $levelNurse=$nurseData['nurse_level'];
         $jreq = $bdd->prepare("SELECT COUNT(*) AS janitor_count, SUM(level) as janitor_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $jreq->execute([$_SESSION['userID'],$janitor]);
@@ -76,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updateBudgetQuery = $bdd->prepare("UPDATE user SET budget = ? WHERE userID = ?;");
             $updateBudgetQuery->execute([$budget, $_SESSION['userID']]);
 
-            $insertRoomQuery = $bdd->prepare("INSERT INTO room (roomTypeID, userID, availability) VALUES (?, ?, ?);");
-            $insertRoomQuery->execute([$roomTypeID, $_SESSION['userID'], $capacity]);
+            $insertRoomQuery = $bdd->prepare("INSERT INTO room (roomTypeID, userID) VALUES (?, ?);");
+            $insertRoomQuery->execute([$roomTypeID, $_SESSION['userID']]);
 
             header("Location: game.php"); 
         } else {

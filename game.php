@@ -30,8 +30,9 @@
     document.getElementById("sellInput").value = price / 2;
     $('#sellRoomModal').modal('show');
 }
+   
 
-    function setPatient(patientID, firstName,lastName,disease,diseaseID) {
+    function setPatient(patientID, firstName,lastName,disease,diseaseID,waitingTime) {
         let argument=firstName+" "+lastName;
         let avatarURL = "https://api.dicebear.com/7.x/avataaars/svg?size=150&style=circle&seed=" + encodeURIComponent(argument) + ".svg";
         document.getElementById("avatar").src=avatarURL;
@@ -43,12 +44,27 @@
         document.getElementById("disease").innerHTML="Disease: "+ disease;
         document.getElementById("patientIDInput").value = patientID;
         document.getElementById("diseaseIDInput").value = diseaseID;
+        if(waitingTime>0 && waitingTime<=120000){
+            document.getElementById("timer").style.display = "block";
+            document.getElementById("timer").innerHTML ="Waiting Time: " + Math.round(waitingTime/1000) +" s";
+            document.getElementById("sendPatientButton").disabled = true;
+            document.getElementById("disease").innerHTML="Disease: ...";
+        }
+        else if(waitingTime>864000000000000){
+        }
+        else{
+            document.getElementById("disease").innerHTML="Disease: "+ disease;
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("sendPatientButton").disabled = false;
+        }
         $('#displayPatientModal').modal('show');
-    }
+}
+    
 </script>
 <body class="bg-light" style="height: 90%">
     <?php
       session_start();
+      $_SESSION['initial']="true";
       if (isset($_SESSION["hire_failed"]) && $_SESSION["hire_failed"]) {
         echo "<script>alert('Not enough funds to hire the staff.');</script>";
         $_SESSION["hire_failed"] = false;
@@ -69,9 +85,10 @@
         echo '<script>alert("Staff already has maximum level.");</script>';
         $_SESSION["upgrade_failed"]   = false;
     }
-
-
-
+    if (isset($_SESSION["sending_home_failed"]  ) && $_SESSION["sending_home_failed"]) {
+        echo '<script>alert("Cannot send patient home. They are not cured!");</script>';
+        $_SESSION["sending_home_failed"]   = false;
+    }
     ?>
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -96,6 +113,9 @@
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
                         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>
+                        <form method="post">
+                            <input class="btn btn-success" type="submit" name="refreshButton" value="Refresh">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -109,24 +129,26 @@
                             $patientFetched = false;
                             $req = $bdd->prepare("SELECT * FROM patient_management pm INNER JOIN patient p ON pm.patientID=p.patientID INNER JOIN disease d ON pm.diseaseID=d.diseaseID WHERE userID=? ORDER BY atHospitalTime DESC;");
                             $req->execute([$_SESSION['userID']]);
-                            $aux = 0;
                             echo '<div class="d-flex flex-wrap">';
                             echo '<a class="btn p-2 flex-fill align-self-center" href=get_patient.php><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg> New Patient</a>';
+                            </svg> New Patient</a>';    
                             while ($data = $req->fetch()) {
-                                $aux = $aux + 1;
+                                if (isset($_POST['refreshButton']) || $_SESSION['initial']="true") {
+                                $_SESSION['initial']="false";
                                 $firstName = $data['firstName'];
                                 $lastName = $data['lastName'];
                                 $patientID = $data['patientID'];
                                 $diseaseID = $data['diseaseID'];
                                 $disease = $data['name'];
+                                $waitingTime = (strtotime($data['waitingTime']) - time()) * 1000;
                                 echo '<button type="button" style="margin: 5px;
-                                background-color: #95ccc5;" class="btn p-2 flex-fill" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\', \'' . $diseaseID . '\')"><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' .
+                                background-color: #95ccc5;" class="btn p-2 flex-fill" onclick="setPatient(' . $patientID . ', \'' . $firstName . '\', \'' . $lastName . '\', \'' . $disease . '\', \'' . $diseaseID . '\', \'' . $waitingTime . '\')"><img src="https://api.dicebear.com/7.x/avataaars/svg?size=64&style=circle&seed=' .
                                 urlencode($data['firstName'] . ' ' . $data['lastName']) . '.svg" alt="avatar" />' . $firstName . ' ' . $lastName . '</button>';
                                 $patientFetched = true;
                             }
+                        }
                             echo '</div>';
                             ?>
                         </div>
@@ -357,26 +379,28 @@
                 <img id="avatar" alt="avatar" />
                 <h5 id="firstName"></h5>
                 <h5 id="lastName"></h5>
-                <h5 id="disease"></h5>
+                <h5 id='disease'></h5>
+                <h5 id='timer'></h5>
                 <form action="send_patient.php" method="POST">
-                <select class="form-control" name="sendPatientRoom">
-                     <?php
-                        $req = $bdd->prepare("SELECT DISTINCT description,r.roomTypeID FROM room r INNER JOIN room_type rt ON r.roomTypeID=rt.roomTypeID WHERE userID=?;");
-                        $req->execute( [$_SESSION["userID"]]);
-                        while($data = $req->fetch()) {
-                            echo '<option value="' . $data['roomTypeID'] . '">'. $data["description"] .'</option>';      
-                        }
-                        echo '<option value="0">Home</option>';
-                    ?> 
-                 </select> 
+                    <select class="form-control" name="sendPatientRoom">
+                        <?php
+                            $req = $bdd->prepare("SELECT DISTINCT description,r.roomTypeID FROM room r INNER JOIN room_type rt ON r.roomTypeID=rt.roomTypeID WHERE userID=? AND r.waitingTime < NOW();");
+                            $req->execute( [$_SESSION["userID"]]);
+                            while($data = $req->fetch()) {
+                                echo '<option value="' . $data['roomTypeID'] . '">'. $data["description"] .'</option>';      
+                            }
+                            echo '<option value="0">Home</option>';
+                        ?>
+                    
+                    </select>
                     <input type="hidden" name="patientID" id="patientIDInput">
                     <input type="hidden" name="diseaseID" id="diseaseIDInput">
                     <br>
-                    <button type="submit" class="btn">Send Patient</button>
+                    <button type="submit" id="sendPatientButton" class="btn">Send Patient</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="patientCloseButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

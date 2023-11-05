@@ -14,10 +14,11 @@
     $req = $bdd->prepare("SELECT COUNT(*) as diseases FROM disease;");
     $req->execute([]);
     $diseases=$req->fetch()['diseases'];
+    $time=date('Y-m-d H:i:s', strtotime('+2 minutes', time()));
 
  if($roomTypeID!=0 && $diseaseName!="Cured"){
-    $req = $bdd->prepare("SELECT COUNT(*) as roomsAvailable FROM room WHERE userID = ? AND roomTypeID= ? AND inUse=?;");
-    $req->execute([$userID,$roomTypeID,0]);
+    $req = $bdd->prepare("SELECT COUNT(*) as roomsAvailable FROM room WHERE userID = ? AND roomTypeID = ? AND waitingTime < NOW();");
+    $req->execute([$userID,$roomTypeID]);
     $roomsAvailable=$req->fetch()['roomsAvailable'];
 
     if($roomsAvailable==0){
@@ -25,11 +26,9 @@
         header("Location:game.php");
     }
     else{
-        $req = $bdd->prepare("SELECT roomID FROM room WHERE roomTypeID = ? AND inUse=?;");
-        $req->execute([$roomTypeNeeded,0]);
+        $req = $bdd->prepare("SELECT roomID FROM room WHERE roomTypeID = ?  AND waitingTime < NOW();");
+        $req->execute([$roomTypeID]);
         $roomToUse=$req->fetch()['roomID'];
-        $req = $bdd->prepare("UPDATE room SET inUse = 1 WHERE roomID = ?;");
-        $req->execute([$roomToUse]);
         if($roomTypeID==$roomTypeNeeded){
             if($diseaseName=="Unknown"){
                $diseaseID=rand(3,$diseases);
@@ -40,8 +39,11 @@
             $req = $bdd->prepare("UPDATE patient_management SET diseaseID = ? WHERE patientID = ? AND userID = ?;");
             $req->execute([$diseaseID,$patientID,$userID]);
         }
-        $req = $bdd->prepare("UPDATE room SET inUse = 0 WHERE roomID = ?;");
-        $req->execute([$roomToUse]);
+        $req = $bdd->prepare("UPDATE room SET waitingTime = ? WHERE roomID = ?;");
+        $req->execute([$time,$roomToUse]);
+        $req = $bdd->prepare("UPDATE patient_management SET waitingTime = ? WHERE patientID = ? AND userID = ?;");
+        $req->execute([$time,$patientID,$userID]);
+        header("Location: game.php");
     }
 }
     else if($roomTypeID==0 && $diseaseName=="Cured"){
@@ -54,6 +56,8 @@
         $req = $bdd->prepare("UPDATE user SET budget=? WHERE userID = ?;");
         $req->execute([$budget,$userID]);
     }
-   header("Location: game.php"); 
-
+    else if($roomTypeID==0 && $diseaseName!="Cured"){
+        $_SESSION["sending_home_failed"] = true; 
+        header("Location: game.php"); 
+    }
 ?>
