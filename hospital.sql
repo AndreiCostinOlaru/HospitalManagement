@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 06 nov. 2023 à 08:21
+-- Généré le : lun. 06 nov. 2023 à 09:07
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -300,11 +300,11 @@ CREATE TABLE `patient_management` (
 --
 
 INSERT INTO `patient_management` (`patientID`, `userID`, `atHospitalTime`, `diseaseID`, `waitingTime`) VALUES
-(2, 1, '2023-11-05 14:25:13', 12, '2023-11-06 08:10:37'),
-(200, 1, '2023-11-05 14:25:15', 8, '2023-11-05 15:36:12'),
-(123, 1, '2023-11-05 14:25:16', 15, '2023-11-06 08:17:51'),
-(118, 1, '2023-11-05 16:13:55', 10, '2023-11-06 08:17:50'),
-(164, 1, '2023-11-06 07:08:51', 19, '2023-11-06 08:17:48');
+(200, 1, '2023-11-05 14:25:15', 2, '2023-11-06 09:07:28'),
+(123, 1, '2023-11-05 14:25:16', 15, '2023-11-06 09:08:31'),
+(164, 1, '2023-11-06 07:08:51', 19, '2023-11-06 08:30:17'),
+(135, 1, '2023-11-06 07:45:45', 4, '2023-11-06 08:47:47'),
+(136, 1, '2023-11-06 07:47:53', 2, '2023-11-06 09:07:13');
 
 -- --------------------------------------------------------
 
@@ -324,9 +324,15 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`roomID`, `roomTypeID`, `userID`, `waitingTime`) VALUES
-(20, 1, 1, '2023-11-06 08:17:48'),
-(22, 1, 1, '2023-11-06 08:17:50'),
-(24, 1, 1, '2023-11-06 08:17:51');
+(20, 1, 1, '2023-11-06 08:49:56'),
+(22, 1, 1, '2023-11-06 08:49:57'),
+(24, 1, 1, '2023-11-06 08:49:59'),
+(27, 5, 1, '2023-11-06 09:08:31'),
+(29, 6, 1, '1989-01-01 00:00:00'),
+(30, 9, 1, '2023-11-06 08:59:13'),
+(31, 4, 1, '2023-11-06 09:07:28'),
+(32, 11, 1, '2023-11-06 09:05:23'),
+(33, 3, 1, '2023-11-06 09:07:13');
 
 -- --------------------------------------------------------
 
@@ -352,10 +358,10 @@ INSERT INTO `room_type` (`roomTypeID`, `price`, `description`, `num_janitors`, `
 (2, 500, 'Operating Room', 1, 1, 1),
 (3, 800, 'Radiology Room', 1, 1, 2),
 (4, 950, 'Isolation Room', 1, 2, 2),
-(5, 400, 'Psychiatric Room', 2, 1, 3),
+(5, 400, 'Psychiatric Room', 1, 1, 3),
 (6, 650, 'Physiotherapy Room', 1, 3, 1),
 (7, 550, 'Neurology Room', 1, 1, 2),
-(8, 650, 'ICU Room', 2, 3, 4),
+(8, 650, 'ICU Room', 1, 3, 4),
 (9, 700, 'Endoscopy Room', 1, 1, 2),
 (10, 700, 'Ultrasound Room', 1, 1, 2),
 (11, 400, 'Pharmacy Room', 1, 0, 1);
@@ -383,7 +389,18 @@ INSERT INTO `staff` (`staffID`, `last_name`, `first_name`, `staffTypeID`, `userI
 (66, 'Snow', 'Anna', 1, 1, 2),
 (67, 'Doe', 'John', 2, 1, 2),
 (69, 'Doe', 'Traian', 3, 1, 0),
-(70, 'Q', 'Andrei', 20, 1, 0);
+(70, 'Q', 'Andrei', 20, 1, 0),
+(71, 'Q', 'Chris', 10, 1, 0),
+(72, 'Q', 'Alex', 11, 1, 1),
+(73, 'Q', 'Alex', 11, 1, 0),
+(74, '33', '12', 12, 1, 2),
+(75, '11', '11', 17, 1, 0),
+(76, '65', '56', 18, 1, 1),
+(77, '!!', '!!', 3, 1, 0),
+(78, 'DeLuxx', 'Javra', 8, 1, 1),
+(79, 'Prodanka', 'Ka', 9, 1, 1),
+(80, 'khan', 'chaka', 6, 1, 0),
+(81, 'Gomex', 'Salina ', 7, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -443,7 +460,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`userID`, `username`, `password`, `hospitalName`, `budget`) VALUES
-(1, 'andrei', 'andrei', 'Andrei', 7325),
+(1, 'andrei', 'andrei', 'Andrei', 588),
 (2, 'chris', 'chris', 'chris', 1000);
 
 --
@@ -519,7 +536,7 @@ ALTER TABLE `disease`
 -- AUTO_INCREMENT pour la table `room`
 --
 ALTER TABLE `room`
-  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `roomID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT pour la table `room_type`
@@ -531,7 +548,7 @@ ALTER TABLE `room_type`
 -- AUTO_INCREMENT pour la table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staffID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `staffID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT pour la table `staff_type`
