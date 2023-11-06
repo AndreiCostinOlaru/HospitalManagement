@@ -39,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case "Neurology Room": $doc="Neurologist"; $nurse="Neurology Nurse";break;
         case "ICU Room": $doc="Intensivist"; $nurse="Intensive Care Nurse";break;
         case "Endoscopy Room": $doc="Endoscopist"; $nurse="Endoscopy Nurse";break;
-        case "Ultrasound Room": $doc=" Ultrasound Technician"; $nurse="General Nurse Practitioner";break;
-        case "Pharmacy Room": $doc="General Practitioner"; $nurse="General Nurse Practitioner";break;
+        case "Ultrasound Room": $doc=" Ultrasound Technician"; $nurse="Ultrasound Nurse";break;
+        case "Pharmacy Room": $doc="General Practitioner"; $nurse="Pharmacy Nurse";break;
     }
     $janitor= "Janitor";
     $req = $bdd->prepare("SELECT staffTypeID FROM staff_type WHERE description = ?;");
@@ -52,13 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $req = $bdd->prepare("SELECT staffTypeID FROM staff_type WHERE description = ?;");
     $req->execute([$janitor]);
     $janitor=$req->fetch()['staffTypeID'];
-    echo $doctor_type;
     if ($budget >= $price) {
         $dreq = $bdd->prepare("SELECT COUNT(*) AS doctor_count, SUM(level) as doctor_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $dreq->execute([$_SESSION['userID'], $doctor_type]);
         $doctorsData = $dreq->fetch();
         $doctors=$doctorsData['doctor_count'];
-        $levelDoc=$doctorsData['doctor_count'];
+        $levelDoc=$doctorsData['doctor_level'];
         $nreq = $bdd->prepare("SELECT COUNT(*) AS nurse_count, SUM(level) as nurse_level FROM staff WHERE userID = ? AND staffTypeID=?;");
         $nreq->execute([$_SESSION['userID'],$nurse_type]);
         $nurseData = $nreq->fetch();
@@ -69,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $janitorData = $jreq->fetch();
         $janitors=$janitorData['janitor_count'];
         $levelJanitor=$janitorData['janitor_level'];
-
+    
         if ($doctors-$req_docs+$levelDoc>=$rooms && $nurses-$req_nurses+$levelNurse>=$rooms && $janitors*5-$req_janitors+$levelJanitor>=$allRooms) {
             $budget = $budget - $price;
 
