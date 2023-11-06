@@ -58,6 +58,6 @@
     }
     else if($roomTypeID==0 && $diseaseName!="Cured"){
         $_SESSION["sending_home_failed"] = true; 
-        header("Location: game.php"); 
     }
+    header("Location: game.php"); 
 ?>
