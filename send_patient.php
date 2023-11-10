@@ -111,6 +111,18 @@
             $req = $bdd->prepare("UPDATE patient_management SET diseaseID = ? WHERE patientID = ? AND userID = ?;");
             $req->execute([$diseaseID,$patientID,$userID]);
         }
+        else{
+            $_SESSION["send_wrong_room"] = true;
+            $req = $bdd->prepare("SELECT * FROM user WHERE userID = ?;");
+            $req->execute([$userID]);
+            $data=$req->fetch();
+            $budget=$data['budget'];
+            $mistakes=$data['mistakes'];
+            $budget -= 50;
+            $mistakes += 1;
+            $req = $bdd->prepare("UPDATE user SET budget=?, mistakes=? WHERE userID = ?;");
+            $req->execute([$budget,$mistakes,$userID]);
+        }
         $req = $bdd->prepare("UPDATE room SET waitingTime = ? WHERE roomID = ?;");
         $req->execute([$time,$roomToUse]);
         $req = $bdd->prepare("UPDATE patient_management SET waitingTime = ? WHERE patientID = ? AND userID = ?;");
@@ -121,12 +133,15 @@
     else if($roomTypeID==0 && $diseaseName=="Cured"){
         $req = $bdd->prepare("DELETE FROM patient_management WHERE patientID=? AND userID=?;");
         $req->execute([$patientID,$userID]);
-        $req = $bdd->prepare("SELECT budget FROM user WHERE userID = ?;");
+        $req = $bdd->prepare("SELECT * FROM user WHERE userID = ?;");
         $req->execute([$userID]);
-        $budget=$req->fetch()['budget'];
+        $data=$req->fetch();
+        $budget=$data['budget'];
+        $patients_cured=$data['patients_cured'];
         $budget += 150;
-        $req = $bdd->prepare("UPDATE user SET budget=? WHERE userID = ?;");
-        $req->execute([$budget,$userID]);
+        $patients_cured+=1;
+        $req = $bdd->prepare("UPDATE user SET budget=?, patients_cured=? WHERE userID = ?;");
+        $req->execute([$budget,$patients_cured,$userID]);
     }
     else if($roomTypeID==0 && $diseaseName!="Cured"){
         $_SESSION["sending_home_failed"] = true; 

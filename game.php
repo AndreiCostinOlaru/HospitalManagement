@@ -89,6 +89,11 @@
         echo '<script>alert("Cannot send patient home. They are not cured!");</script>';
         $_SESSION["sending_home_failed"]   = false;
     }
+    if (isset( $_SESSION["send_wrong_room"]) &&  $_SESSION["send_wrong_room"]) {
+        echo '<script>alert("You sent the patient to the wrong room. You will lose $50!");</script>';
+        $_SESSION["send_wrong_room"]   = false;
+    }
+
     ?>
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -263,32 +268,55 @@
                 <h5 class="modal-title" id="displayStatisticsModalLabel">Statistics</h5>
             </div>
             <div class="modal-body">
-                <ul style="list-style: none">
-                    <?php
-                    $staffFetched=false;
-                    $req = $bdd->prepare("SELECT * FROM staff WHERE userID=?;");
-                    $req->execute([$_SESSION['userID']]);
-                    while ($data = $req->fetch()) {
-                        $sreq = $bdd->prepare("SELECT salary FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
-                        $sreq->execute([$data['staffID']]);
-                        $sdata = $sreq->fetch();
-                        if($data){
-                        $treq = $bdd->prepare("SELECT description FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
-                        $treq->execute([$data['staffID']]);
-                        $tdata = $treq->fetch();
-                        echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . ' | '. $tdata['description'] .'
-                                <button type="button" class="btn" onclick="setStaffIdUpgrade('.$data['staffID'].','. $sdata['salary'] .')">Upgrade</button>
-                                <button type="button" class="btn btn-danger" onclick="setStaffId('.$data['staffID'].','. $sdata['salary'] .')">Fire</button>
-                        </li>';
-                        $staffFetched = true;
-                        }
-                    }
-                    if(!$staffFetched){
-                        echo "<li>No staff to show.</li>";
-                    }
+                <div class="container mt-5">
+                <?php
+                        $req = $bdd->prepare("SELECT * FROM user WHERE userID=?;");
+                        $req->execute([$_SESSION['userID']]);
+                        $data = $req->fetch();
+                        echo '<div class="col-md-6 mx-auto">
+                            <div class="card text-white bg-primary mb-6">
+                                <div class="card-header">Patients Cured</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">' . $data["patients_cured"] . '</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6 mx-auto">
+                            <div class="card text-white bg-success mb-6">
+                                <div class="card-header">Earnings</div>
+                                <div class="card-body">';
+                                if($data["patients_cured"]*150-$data["mistakes"]*50>=0)
+                                    echo '<h5 class="card-title">$' . $data["patients_cured"]*150-$data["mistakes"]*50 . '</h5>';
+                                else{
+                                    echo '<h5 class="card-title">-$' . -$data["patients_cured"]*150+$data["mistakes"]*50 . '</h5>';
+                                }
+                               echo '</div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6 mx-auto">
+                            <div class="card text-white bg-info mb-6">
+                                <div class="card-header">Money lost</div>
+                              
+                                <div class="card-body">
+                                    <h5 class="card-title">$'. $data["mistakes"]*50 .'</h5>
+                                </div>
+                            </div>
+                       </div>
+                       <br>
+                       <div class="col-md-6 mx-auto">
+                            <div class="card text-white bg-danger mb-6">
+                                <div class="card-header">Mistakes</div>
+                              
+                                <div class="card-body">
+                                    <h5 class="card-title">'. $data["mistakes"]     .'</h5>
+                                </div>
+                            </div>
+                       </div>
+                    </div>'
                     ?>
-                </ul>
-            </div>
+                </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
