@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         case "Neurology Room": $doc="Neurologist"; $nurse="Neurology Nurse";break;
         case "ICU Room": $doc="Intensivist"; $nurse="Intensive Care Nurse";break;
         case "Endoscopy Room": $doc="Endoscopist"; $nurse="Endoscopy Nurse";break;
-        case "Ultrasound Room": $doc=" Ultrasound Technician"; $nurse="Ultrasound Nurse";break;
+        case "Ultrasound Room": $doc="Ultrasound Technician"; $nurse="Ultrasound Nurse";break;
         case "Pharmacy Room": $doc="General Practitioner"; $nurse="Pharmacy Nurse";break;
     }
     $janitor= "Janitor";

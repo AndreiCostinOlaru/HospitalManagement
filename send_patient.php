@@ -33,6 +33,78 @@
             if($diseaseName=="Unknown"){
                $diseaseID=rand(3,$diseases);
             }
+            else if($diseaseName=="Appendicitis" || $diseaseName=="Benign Tumor" || $diseaseName=="Crohns Disease" || $diseaseName=="Kidney Stones"){
+                $aux1=rand(1,100);
+                if($aux1<=20){
+                    $diseaseID=16;
+                }
+                else{
+                    $aux2=rand(1,100);
+                    if($aux2<=20){
+                        $diseaseID=12;
+                    }
+                    else{
+                        $diseaseID=2;
+                    }
+                }
+            }
+            else if($diseaseName=="Suspecting Kidney Infection" || $diseaseName=="Suspecting Kidney Stones"){
+                $aux=rand(1,100);
+                if($aux<=50){
+                    $diseaseID=23;
+                }
+                else{
+                    $diseaseID=24;
+                }
+            }
+            else if($diseaseName=="Suspecting Gastrointestinal Condition"){
+                $aux=rand(1,100);
+                if($aux<=75){
+                    $diseaseID=22;
+                }
+                else{
+                    $diseaseID=2;
+                }
+            }
+            else if($diseaseName=="Suspecting Crohns Disease"){
+                $aux=rand(1,100);
+                if($aux<=75){
+                    $diseaseID=21;
+                }
+                else{
+                    $diseaseID=22;
+                }
+            }
+            else if($diseaseName=="Suspecting Bone Fracture"){
+                $aux=rand(1,100);
+                if($aux<=75){
+                    $diseaseID=11;
+                }
+                else{
+                    $diseaseID=2;
+                }
+            }
+            else if($diseaseName=="Suspecting Tumor"){
+                $aux=rand(1,100);
+                if($aux<=50){
+                    $diseaseID=4;
+                }
+                else if($aux>50 && $aux<80){
+                    $diseaseID=24;
+                }
+                else{
+                    $diseaseID=2;
+                }
+            }
+            else if($diseaseName=="Trauma"){
+                $aux=rand(1,100);
+                if($aux<=75){
+                    $diseaseID=2;
+                }
+                else{
+                    $diseaseID=9;
+                }
+            }
             else{
                 $diseaseID=2;//Cured
             }
