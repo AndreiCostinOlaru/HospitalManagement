@@ -92,7 +92,7 @@
     ?>
     <div class="container">
         <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Theme Hospital</h2>
@@ -107,24 +107,40 @@
                             $_SESSION['budget']=$budget;
                         ?>
                         
-                        <p>Welcome, <?php echo $username; ?>!</p>
+                        <span> Welcome, <?php echo $username; ?>!</span>
+                        <a class="btn btn-primary p-2 flex-fill float-end" style="width:46px;" href="menu.php">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                            </svg>
+                        </a>
                         <p>Your Budget: $<?php echo $budget; ?></p>
                         <button class="btn btn-success p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
                         <button class="btn btn-info p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
                         <button class="btn btn-success p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
-                        <button class="btn btn-info p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>
+                        <button class="btn btn-info p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>              
                         <form method="post" style="display:inline;" class="p-2 flex-fill">
-                            <button class="btn btn-success p-2 flex-fill float-end" style="width:46px;" type="submit" name="refreshButton" value="Refresh"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                            </svg></button>
+                            <button class="btn btn-success p-2 flex-fill float-end" style="width:46px;" type="submit" name="refreshButton" value="Refresh">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                            </button>
                         </form>
+                        <span class="float-end">&nbsp;</span>
+                        <button class="btn btn-success p-2 flex-fill float-end" style="width:46px;" data-bs-toggle="modal" data-bs-target="#displayStatistics">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                                <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                            </svg>
+                        </button>         
+                        
                     </div>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="card" style="overflow-y: auto; max-height: 67vh">
                     <div class="card-body">
                         <div class="container text-center">
@@ -201,10 +217,50 @@
         </div>
     </div>
     <div class="modal fade" id="displayHiredStaffModal" tabindex="-1" aria-labelledby="displayHiredStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="displayHiredStaffModalLabel">Hired Staff</h5>
+                </div>
+                <div class="modal-body">
+                    <ul style="list-style: none">
+                        <?php
+                        $staffFetched=false;
+                        $req = $bdd->prepare("SELECT * FROM staff WHERE userID=?;");
+                        $req->execute([$_SESSION['userID']]);
+                        while ($data = $req->fetch()) {
+                            $sreq = $bdd->prepare("SELECT salary FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
+                            $sreq->execute([$data['staffID']]);
+                            $sdata = $sreq->fetch();
+                            if($data){
+                            $treq = $bdd->prepare("SELECT description FROM staff_type st INNER JOIN staff s ON st.staffTypeID=s.staffTypeID WHERE s.staffID=?;");
+                            $treq->execute([$data['staffID']]);
+                            $tdata = $treq->fetch();
+                            echo '<li>' . $data["first_name"] . ' ' . $data["last_name"] . ' | '. $tdata['description'] .'
+                                    <button type="button" class="btn" onclick="setStaffIdUpgrade('.$data['staffID'].','. $sdata['salary'] .')">Upgrade</button>
+                                    <button type="button" class="btn btn-danger" onclick="setStaffId('.$data['staffID'].','. $sdata['salary'] .')">Fire</button>
+                            </li>';
+                            $staffFetched = true;
+                            }
+                        }
+                        if(!$staffFetched){
+                            echo "<li>No staff to show.</li>";
+                        }
+                        ?>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="displayStatistics" tabindex="-1" aria-labelledby="displayStatisticsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="displayHiredStaffModalLabel">Hired Staff</h5>
+                <h5 class="modal-title" id="displayStatisticsModalLabel">Statistics</h5>
             </div>
             <div class="modal-body">
                 <ul style="list-style: none">
@@ -239,7 +295,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="upgradeStaffModal" tabindex="-1" aria-labelledby="upgradeStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog">
