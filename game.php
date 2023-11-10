@@ -95,7 +95,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Welcome to the Game</h2>
+                        <h2 class="card-title">Theme Hospital</h2>
                         
                         <?php
                             $userID = $_SESSION['userID'];

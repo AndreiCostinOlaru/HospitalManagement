@@ -14,11 +14,10 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Welcome to the Game Menu</h2>
-                        <p>Menu content goes here.</p>
-                        <a href="game.php" class="btn btn-primary">START</a>
-                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
-                        <a href="logout.php" class="btn btn-danger">LOG OUT</a>
+                        <h2 class="card-title">Welcome to Theme Hospital!</h2>
+                            <a href="game.php" class="btn btn-primary">START</a>
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
+                            <a href="logout.php" class="btn btn-danger">LOG OUT</a>
                     </div>
                 </div>
             </div>
