@@ -14,7 +14,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body justify-content-center">
-                        <div class="d-flex d-flex justify-content-center">
+                        <div class="d-flex justify-content-center">
                         <?php
                             session_start();
                             $userID = $_SESSION['userID'];
@@ -27,16 +27,16 @@
                         ?>
                         </div>
                         <br>
-                        <div class="d-flex d-flex justify-content-center">
-                        <a href="game.php" class="btn btn-primary p-2 align-items-center buton">START</a>
+                        <div class="d-flex justify-content-center">
+                        <a href="game.php" class="btn btn-primary p-2 align-items-center flex-fill buton">START</a>
                         </div>
                         <br>
-                        <div class="d-flex d-flex justify-content-center">
-                        <button class="btn btn-info p-2 align-items-center buton" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
+                        <div class="d-flex  justify-content-center">
+                        <button class="btn btn-info p-2 align-items-center flex-fill buton" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
                         </div>
                         <br>
-                        <div class="d-flex d-flex justify-content-center">
-                        <a href="logout.php" class="btn btn-danger p-2 align-items-center buton">LOG OUT</a>
+                        <div class="d-flex justify-content-center">
+                        <a href="logout.php" class="btn btn-danger p-2 align-items-center flex-fill buton">LOG OUT</a>
                         </div>
                         <br>
                     </div>
