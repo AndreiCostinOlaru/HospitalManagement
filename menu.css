@@ -36,3 +36,10 @@ body {
     border-color: white;
 }
 
+.buton{
+    width: 90%;
+    height: 45px;
+    margin: 5px;
+    box-shadow: 5px 5px 5px #2e5668;
+}
+

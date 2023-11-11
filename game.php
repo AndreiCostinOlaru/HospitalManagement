@@ -5,9 +5,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="game.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Baloo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="gamescreen.css">
 </head>
 <script>
     function setStaffId(staffId, salary) {
@@ -61,7 +61,7 @@
 }
     
 </script>
-<body class="bg-light" style="height: 90%">
+<body>
     <?php
       session_start();
       $_SESSION['initial']="true";
@@ -100,46 +100,68 @@
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Theme Hospital</h2>
+                        <div class="d-flex">
+                            <div class="d-flex justify-content-start">
+                                <div>
+                                    <?php
+                                        $hospitalName=$_SESSION['hospitalName'];
+                                        echo '<h1 class="card-title">' . $hospitalName . '</h1>';
+                                        $userID = $_SESSION['userID'];
+                                        $username = $_SESSION['username'];
+                                        $bdd = new PDO("mysql:host=localhost;dbname=hospital;charset=utf8", "root", "");
+                                        $req = $bdd->prepare("SELECT budget FROM user WHERE userID = ?;");
+                                        $req->execute([$userID]);
+                                        $budget = $req->fetch()['budget'];
+                                        $_SESSION['budget']=$budget;
+                                    ?>
+                                </div>
+                                <div class="px-2 align-items-center">
+                                    <button class="btn btn-success p-2 flex-fill float-end justify-content-center align-items-center" style="width:50px; height:40px;" data-bs-toggle="modal" data-bs-target="#displayStatistics">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                                            <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
+                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="px-2 justify-content-end flex-fill">
+                                <a class="btn p-2 btn-primary flex-fill float-end justify-content-center align-items-center" style="width:50px; height:40px;" href="menu.php">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                                    </svg>
+                                </a>
+                           </div>
+                        </div>
                         
-                        <?php
-                            $userID = $_SESSION['userID'];
-                            $username = $_SESSION['username'];
-                            $bdd = new PDO("mysql:host=localhost;dbname=hospital;charset=utf8", "root", "");
-                            $req = $bdd->prepare("SELECT budget FROM user WHERE userID = ?;");
-                            $req->execute([$userID]);
-                            $budget = $req->fetch()['budget'];
-                            $_SESSION['budget']=$budget;
-                        ?>
-                        
-                        <span> Welcome, <?php echo $username; ?>!</span>
-                        <a class="btn btn-primary p-2 flex-fill float-end" style="width:46px;" href="menu.php">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
-                            </svg>
-                        </a>
-                        <p>Your Budget: $<?php echo $budget; ?></p>
-                        <button class="btn btn-success p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
-                        <button class="btn btn-info p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
-                        <button class="btn btn-success p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
-                        <button class="btn btn-info p-2 flex-fill" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>              
-                        <form method="post" style="display:inline;" class="p-2 flex-fill">
-                            <button class="btn btn-success p-2 flex-fill float-end" style="width:46px;" type="submit" name="refreshButton" value="Refresh">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                </svg>
-                            </button>
-                        </form>
-                        <span class="float-end">&nbsp;</span>
-                        <button class="btn btn-success p-2 flex-fill float-end" style="width:46px;" data-bs-toggle="modal" data-bs-target="#displayStatistics">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
-                                <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0V9z"/>
-                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-                            </svg>
-                        </button>         
-                        
+                        <span><h4> Welcome, <?php echo $username; ?>!</h4></span>
+                        <h4>Your Budget: $<?php echo $budget; ?></h4>
+                        <div class="d-flex flex-wrap">
+                            <div class="d-flex justify-content-start flex-wrap">
+                                <div class="py-1">
+                                <button class="btn btn-success buton" style="height:40px;" data-bs-toggle="modal" data-bs-target="#hireStaffModal">Hire Staff</button>
+                                </div>
+                                <div class="px-2 py-1">
+                                <button class="btn btn-info buton" style="height:40px;" data-bs-toggle="modal" data-bs-target="#displayHiredStaffModal">Display Hired Staff</button>
+                                </div>
+                                <div class="py-1">
+                                <button class="btn btn-success buton" style="height:40px;" data-bs-toggle="modal" data-bs-target="#purchaseRoomModal">Purchase Room</button>
+                                </div>
+                                <div class="px-2 py-1">
+                                <button class="btn btn-info buton" style="height:40px;" data-bs-toggle="modal" data-bs-target="#displayRoomsModal">Display Rooms</button>              
+                                </div>
+                                <div class="py-1">
+                                <form method="post" style="display:inline;" class="d-flex justify-content-end">
+                                <button class="btn btn-success float-end justify-content-center align-items-center" style="width:50px; height:40px;" type="submit" name="refreshButton" value="Refresh">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                    </svg>
+                                </button>
+                                </form> 
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,10 +287,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="displayStatisticsModalLabel">Statistics</h5>
+                <h2 class="modal-title" id="displayStatisticsModalLabel">Statistics</h2>
             </div>
             <div class="modal-body">
-                <div class="container mt-5">
+                <div class="container mt-1">
                 <?php
                         $req = $bdd->prepare("SELECT * FROM user WHERE userID=?;");
                         $req->execute([$_SESSION['userID']]);
@@ -296,7 +318,7 @@
                         </div>
                         <br>
                         <div class="col-md-6 mx-auto">
-                            <div class="card text-white bg-info mb-6">
+                            <div class="card text-white bg-warning mb-6">
                                 <div class="card-header">Money lost</div>
                               
                                 <div class="card-body">

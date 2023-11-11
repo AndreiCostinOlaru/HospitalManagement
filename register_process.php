@@ -3,7 +3,7 @@
     $username = $_POST["username"];
     $password = $_POST["password"];
     $hospital = $_POST["hospital"];
-    $budget = 1000;
+    $budget = 5000;
 
     $bdd = new PDO("mysql:host=localhost;dbname=hospital;charset=utf8", "root", "");
     $req = $bdd->prepare("INSERT INTO user (username, password, hospitalName, budget) VALUES (?, ?, ?, ?);");

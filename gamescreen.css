@@ -1,11 +1,10 @@
-html {
-    size: 100%;
+html{
+    height:100%;
+    background: linear-gradient(160deg, #95ccc5, #2e5668);
 }
 
-body {
-    size: 100%;
-    margin: 0;
-    background: linear-gradient(160deg, #95ccc5, #2e5668);
+body{
+    background-color: transparent;
 }
 
 .card {

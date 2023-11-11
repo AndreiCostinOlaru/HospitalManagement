@@ -13,11 +13,32 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Welcome to Theme Hospital!</h2>
-                            <a href="game.php" class="btn btn-primary">START</a>
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
-                            <a href="logout.php" class="btn btn-danger">LOG OUT</a>
+                    <div class="card-body justify-content-center">
+                        <div class="d-flex d-flex justify-content-center">
+                        <?php
+                            session_start();
+                            $userID = $_SESSION['userID'];
+                            $bdd = new PDO("mysql:host=localhost;dbname=hospital;charset=utf8", "root", "");
+                            $req = $bdd->prepare("SELECT hospitalName FROM user WHERE userID = ?;");
+                            $req->execute([$userID]);
+                            $hospitalName = $req->fetch()['hospitalName'];
+                            $_SESSION['hospitalName']=$hospitalName;
+                            echo '<h1 class="card-title">Welcome to ' . $hospitalName . '!</h1>'
+                        ?>
+                        </div>
+                        <br>
+                        <div class="d-flex d-flex justify-content-center">
+                        <a href="game.php" class="btn btn-primary p-2 align-items-center buton">START</a>
+                        </div>
+                        <br>
+                        <div class="d-flex d-flex justify-content-center">
+                        <button class="btn btn-info p-2 align-items-center buton" data-bs-toggle="modal" data-bs-target="#rulesModal">RULES</button>
+                        </div>
+                        <br>
+                        <div class="d-flex d-flex justify-content-center">
+                        <a href="logout.php" class="btn btn-danger p-2 align-items-center buton">LOG OUT</a>
+                        </div>
+                        <br>
                     </div>
                 </div>
             </div>
