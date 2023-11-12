@@ -62,6 +62,7 @@
                         <li>Each staff member has a level attribute, and by increasing their level, the user will be able to assign them to one more room</li>
                         <li>The maximum staff level is 2</li>
                         <li>Once you have the right rooms required to treat the diferrent illnesses, you will need to figure out by yourself where to send your patients</li>
+                        <li>After sending a patient to a room you will have to wait for 2 minutes</li>
                         <li>Sending a patient to the right rooms will cure them, but sending them to the wrong room will take away $50</li>
                         <li>Once a patient is cured, they can be sent home and the budget will increase by $200</li>
                         <li>You can fire staff and by doing so you will receive half of their salary</li>
