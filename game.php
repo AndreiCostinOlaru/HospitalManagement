@@ -308,10 +308,10 @@
                             <div class="card text-white bg-success mb-6">
                                 <div class="card-header">Earnings</div>
                                 <div class="card-body">';
-                                if($data["patients_cured"]*200-$data["mistakes"]*50>=0)
-                                    echo '<h5 class="card-title">$' . $data["patients_cured"]*200-$data["mistakes"]*50 . '</h5>';
+                                if($data["patients_cured"]*300-$data["mistakes"]*50>=0)
+                                    echo '<h5 class="card-title">$' . $data["patients_cured"]*300-$data["mistakes"]*50 . '</h5>';
                                 else{
-                                    echo '<h5 class="card-title">-$' . -$data["patients_cured"]*200+$data["mistakes"]*50 . '</h5>';
+                                    echo '<h5 class="card-title">-$' . -$data["patients_cured"]*300+$data["mistakes"]*50 . '</h5>';
                                 }
                                echo '</div>
                             </div>
