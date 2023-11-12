@@ -15,12 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $req_nurses = $data['num_nurses'];
     $req_janitors = $data['num_janitors'];
 
-    $rreq = $bdd->prepare("SELECT COUNT(*) AS rooms FROM room WHERE roomTypeID = ?;");
-    $rreq->execute([$roomTypeID]);
+    $rreq = $bdd->prepare("SELECT COUNT(*) AS rooms FROM room WHERE roomTypeID = ? AND userID=?;");
+    $rreq->execute([$roomTypeID,$_SESSION['userID']]);
     $rooms=$rreq->fetch()['rooms'];
 
-    $rreq = $bdd->prepare("SELECT COUNT(*) AS rooms FROM room;");
-    $rreq->execute([]);
+    $rreq = $bdd->prepare("SELECT COUNT(*) AS rooms FROM room WHERE userID=?;");
+    $rreq->execute([$_SESSION['userID']]);
     $allRooms=$rreq->fetch()['rooms'];
 
 

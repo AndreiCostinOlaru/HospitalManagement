@@ -138,7 +138,7 @@
         $data=$req->fetch();
         $budget=$data['budget'];
         $patients_cured=$data['patients_cured'];
-        $budget += 150;
+        $budget += 200;
         $patients_cured+=1;
         $req = $bdd->prepare("UPDATE user SET budget=?, patients_cured=? WHERE userID = ?;");
         $req->execute([$budget,$patients_cured,$userID]);
