@@ -26,8 +26,8 @@
         header("Location:game.php");
     }
     else{
-        $req = $bdd->prepare("SELECT roomID FROM room WHERE roomTypeID = ?  AND waitingTime < NOW();");
-        $req->execute([$roomTypeID]);
+        $req = $bdd->prepare("SELECT roomID FROM room WHERE roomTypeID = ? AND userID = ?  AND waitingTime < NOW();");
+        $req->execute([$roomTypeID, $userID]);
         $roomToUse=$req->fetch()['roomID'];
         if($roomTypeID==$roomTypeNeeded){
             if($diseaseName=="Unknown"){
